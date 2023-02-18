@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:robanohashi/custom_tab_bar.dart';
+import 'mnemonic_text.dart';
 
 class Kanji extends StatelessWidget {
   const Kanji({
@@ -20,7 +20,7 @@ class Kanji extends StatelessWidget {
             Text('Meaning'),
             Text('Reading')
           ], children: [
-            Mnemonic(
+            MnemonicText(
               text:
                   "You use a special spear in winter to give yourself the power to do all of your tasks. It's hard to get a task done in winter. That's why you have this spear to power and motivate you.",
               meanings: {
@@ -35,71 +35,6 @@ class Kanji extends StatelessWidget {
         )
       ]),
     );
-  }
-}
-
-enum Token { radical, kanji, plain }
-
-class Mnemonic extends StatelessWidget {
-  const Mnemonic({super.key, required this.text, required this.meanings});
-
-  final String text;
-  final Map<String, Token> meanings;
-
-  List<TextSpan> _constructText() {
-    final tokens = text.split(' ');
-    final spans = <TextSpan>[];
-    final tokenMask = [];
-
-    for (var i = 0; i < tokens.length; i++) {
-      final token = tokens[i];
-
-      final mask = meanings.entries
-          .firstWhere(
-            (entry) => token.toLowerCase().startsWith(entry.key.toLowerCase()),
-            orElse: () => MapEntry(token, Token.plain),
-          )
-          .value;
-      tokenMask.add(mask);
-    }
-
-    var lastMeaningIndex = 0;
-
-    for (var j = 0; j < tokens.length; j++) {
-      if (tokenMask[j] != Token.plain) {
-        final plainTokens = [...tokens.sublist(lastMeaningIndex, j), ' '];
-
-        spans.add(TextSpan(
-            text: plainTokens.join(' '),
-            style: TextStyle(color: Colors.grey[600])));
-
-        spans.add(TextSpan(
-          text: '${tokens[j]} ',
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: tokenMask[j] == Token.kanji
-                  ? Colors.purple[400]
-                  : Colors.blue),
-        ));
-        lastMeaningIndex = j + 1;
-      }
-    }
-
-    final plainTokens = tokens.sublist(lastMeaningIndex, tokens.length);
-    spans.add(TextSpan(
-        text: plainTokens.join(' '),
-        style: TextStyle(color: Colors.grey[600])));
-
-    print(tokenMask);
-
-    return spans;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final spans = _constructText();
-
-    return RichText(text: TextSpan(children: spans));
   }
 }
 
