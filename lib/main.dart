@@ -1,10 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'kanji.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
+import 'package:jovial_svg/jovial_svg.dart';
 
 void main() => runApp(const App());
 
@@ -131,10 +129,19 @@ class CustomSearchDelegate extends SearchDelegate {
               itemCount: snapshot.data!.data.length,
               itemBuilder: (context, index) {
                 var result = snapshot.data!.data[index];
+
                 return ListTile(
-                  title: result.characters != ""
-                      ? Text(result.characters)
-                      : SvgPicture.string(result.characterImage),
+                  title: result.characters == ""
+                      ? SizedBox(
+                          width: 15,
+                          height: 15,
+                          child: ScalableImageWidget(
+                            alignment: Alignment.topLeft,
+                            si: ScalableImage.fromSvgString(
+                                result.characterImage),
+                          ),
+                        )
+                      : Text(result.characters),
                 );
               },
             );
