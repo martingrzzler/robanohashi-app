@@ -72,40 +72,45 @@ class SearchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      trailing: const Icon(Icons.chevron_right),
-      leading: Container(
-        decoration: BoxDecoration(
-            color: _getBackgroundColor(),
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 3,
-                offset: Offset(0, 1),
-              ),
-            ]),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: subject.characters == ""
-              ? SizedBox(
-                  width: 25,
-                  height: 25,
-                  child: ScalableImageWidget(
-                    si: ScalableImage.fromSvgString(
-                      subject.characterImage,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/kanji', arguments: subject.id);
+      },
+      child: ListTile(
+        trailing: const Icon(Icons.chevron_right),
+        leading: Container(
+          decoration: BoxDecoration(
+              color: _getBackgroundColor(),
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 3,
+                  offset: Offset(0, 1),
+                ),
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: subject.characters == ""
+                ? SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: ScalableImageWidget(
+                      si: ScalableImage.fromSvgString(
+                        subject.characterImage,
+                      ),
                     ),
-                  ),
-                )
-              : Text(subject.characters,
-                  style: const TextStyle(fontSize: 25, color: Colors.white)),
+                  )
+                : Text(subject.characters,
+                    style: const TextStyle(fontSize: 25, color: Colors.white)),
+          ),
         ),
-      ),
-      title: Text(subject.readings?.join(", ") ?? "",
-          overflow: TextOverflow.ellipsis),
-      subtitle: Text(
-        subject.meanings.join(", "),
-        overflow: TextOverflow.ellipsis,
+        title: Text(subject.readings?.join(", ") ?? "",
+            overflow: TextOverflow.ellipsis),
+        subtitle: Text(
+          subject.meanings.join(", "),
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }

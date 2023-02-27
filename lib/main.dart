@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'kanji.dart';
-import 'dart:convert';
-import 'package:jovial_svg/jovial_svg.dart';
 
 import 'search/search_delegate.dart';
 
@@ -12,8 +10,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Main(),
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Main(),
+        '/kanji': (context) => const Kanji(),
+      },
     );
   }
 }
@@ -43,7 +45,7 @@ class _MainState extends State<Main> {
           )
         ],
       ),
-      body: const Kanji(),
+      body: const Placeholder(),
     );
   }
 }

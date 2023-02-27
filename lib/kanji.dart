@@ -9,31 +9,36 @@ class Kanji extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(children: const [
-        Definition(),
-        Divider(),
-        RadicalComposition(),
-        Expanded(
-          child: CustomTabBar(tabs: [
-            Text('Meaning'),
-            Text('Reading')
-          ], children: [
-            MnemonicText(
-              text:
-                  "You use a special spear in winter to give yourself the power to do all of your tasks. It's hard to get a task done in winter. That's why you have this spear to power and motivate you.",
-              meanings: {
-                'spear': Token.radical,
-                'winter': Token.radical,
-                'power': Token.radical,
-                'task': Token.kanji,
-              },
-            ),
-            Text('Reading')
-          ]),
-        )
-      ]),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Roba no hashi'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(children: const [
+          Definition(),
+          Divider(),
+          RadicalComposition(),
+          Expanded(
+            child: CustomTabBar(tabs: [
+              Text('Meaning'),
+              Text('Reading')
+            ], children: [
+              MnemonicText(
+                text:
+                    "You use a special spear in winter to give yourself the power to do all of your tasks. It's hard to get a task done in winter. That's why you have this spear to power and motivate you.",
+                meanings: {
+                  'spear': Token.radical,
+                  'winter': Token.radical,
+                  'power': Token.radical,
+                  'task': Token.kanji,
+                },
+              ),
+              Text('Reading')
+            ]),
+          )
+        ]),
+      ),
     );
   }
 }
