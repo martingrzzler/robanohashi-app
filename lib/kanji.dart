@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/custom_tab_bar.dart';
 import 'mnemonic_text.dart';
 
@@ -135,14 +136,14 @@ class Definition extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Card(
-        color: Colors.purple[400],
+        color: getSubjectBackgroundColor("kanji"),
         child: const Padding(
           padding: EdgeInsets.only(left: 20, right: 20, bottom: 2),
           child: Text('務',
               style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.white,
-                  fontFamily: 'Noto Sans Japanese')),
+                fontSize: 50,
+                color: Colors.white,
+              )),
         ),
       ),
       const SizedBox(

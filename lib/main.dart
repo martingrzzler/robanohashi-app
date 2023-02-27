@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'kanji.dart';
+import 'package:robanohashi/kanji/kanji.dart';
 
 import 'search/search_delegate.dart';
 
@@ -13,21 +13,29 @@ class App extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => const Main(),
-        '/kanji': (context) => const Kanji(),
+        '/': (context) => const Home(),
+        // '/kanji': (context) => const KanjiView(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == KanjiView.routeName) {
+          final args = settings.arguments as KanjiViewArgs;
+          return MaterialPageRoute(
+            builder: (context) => KanjiView(id: args.id),
+          );
+        }
       },
     );
   }
 }
 
-class Main extends StatefulWidget {
-  const Main({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  State<Main> createState() => _MainState();
+  State<Home> createState() => _HomeState();
 }
 
-class _MainState extends State<Main> {
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

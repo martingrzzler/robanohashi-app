@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
+import 'package:robanohashi/common/colors.dart';
+import 'package:robanohashi/common/subject_card.dart';
+import 'package:robanohashi/kanji/kanji.dart';
 
 import 'api.dart';
 
@@ -59,51 +62,29 @@ class SearchTile extends StatelessWidget {
 
   final SubjectPreview subject;
 
-  _getBackgroundColor() {
-    switch (subject.object) {
-      case "kanji":
-        return Colors.pink;
-      case "radical":
-        return Colors.blue;
-      case "vocabulary":
-        return Colors.purple;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/kanji', arguments: subject.id);
+        Navigator.pushNamed(context, '/kanji',
+            arguments: KanjiViewArgs(id: subject.id));
       },
       child: ListTile(
         trailing: const Icon(Icons.chevron_right),
-        leading: Container(
-          decoration: BoxDecoration(
-              color: _getBackgroundColor(),
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 3,
-                  offset: Offset(0, 1),
-                ),
-              ]),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: subject.characters == ""
-                ? SizedBox(
-                    width: 25,
-                    height: 25,
-                    child: ScalableImageWidget(
-                      si: ScalableImage.fromSvgString(
-                        subject.characterImage,
-                      ),
+        leading: SubjectCard(
+          color: getSubjectBackgroundColor(subject.object),
+          child: subject.characters == ""
+              ? SizedBox(
+                  width: 25,
+                  height: 25,
+                  child: ScalableImageWidget(
+                    si: ScalableImage.fromSvgString(
+                      subject.characterImage,
                     ),
-                  )
-                : Text(subject.characters,
-                    style: const TextStyle(fontSize: 25, color: Colors.white)),
-          ),
+                  ),
+                )
+              : Text(subject.characters,
+                  style: const TextStyle(fontSize: 25, color: Colors.white)),
         ),
         title: Text(subject.readings?.join(", ") ?? "",
             overflow: TextOverflow.ellipsis),

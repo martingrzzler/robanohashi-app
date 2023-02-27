@@ -53,10 +53,11 @@ class SearchResponse {
 
 Future<SearchResponse> fetchSearchResults(String query) async {
   final response = await http
-      .get(Uri.parse('http://martingrzzler:5000/search?query=$query'));
+      .get(Uri.parse('http://192.168.2.123:5000/search?query=$query'));
 
-  if (response.statusCode == 200) {
-    return SearchResponse.fromJson(jsonDecode(response.body));
+  if (response.statusCode != 200) {
+    throw Exception('Failed to load search results');
   }
-  throw Exception('Failed to load search results');
+
+  return SearchResponse.fromJson(jsonDecode(response.body));
 }
