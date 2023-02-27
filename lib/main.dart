@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'kanji.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jovial_svg/jovial_svg.dart';
+
+import 'search/search_delegate.dart';
 
 void main() => runApp(const App());
 
@@ -35,181 +36,14 @@ class _MainState extends State<Main> {
         actions: [
           IconButton(
             onPressed: () {
-              showSearch(context: context, delegate: CustomSearchDelegate());
+              showSearch(
+                  context: context, delegate: DictionarySearchDelegate());
             },
             icon: const Icon(Icons.search),
           )
         ],
       ),
-      body: Kanji(),
+      body: const Kanji(),
     );
   }
-}
-
-class CustomSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = [
-    "Apple",
-    "Banana",
-    "Mango",
-    "Pear",
-    "Watermelons",
-    "Blueberries",
-    "Pineapples",
-    "Strawberries"
-  ];
-
-  late Future<SearchResponse> searchResults;
-
-  // first overwrite to
-  // clear the search text
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    return [
-      IconButton(
-        onPressed: () {
-          query = '';
-        },
-        icon: Icon(Icons.clear),
-      ),
-    ];
-  }
-
-  // second overwrite to pop out of search menu
-  @override
-  Widget? buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, null);
-      },
-      icon: Icon(Icons.arrow_back),
-    );
-  }
-
-  // third overwrite to show query result
-  @override
-  Widget buildResults(BuildContext context) {
-    print("buildResults $query");
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    if (query.length < 2) {
-      return const Center(
-        child: Text('Results here'),
-      );
-    }
-
-    searchResults = fetchSearchResults(query);
-
-    return FutureBuilder(
-        future: searchResults,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data!.totalCount == 0) {
-              return const Center(
-                child: Text('No results'),
-              );
-            }
-            return ListView.builder(
-              itemCount: snapshot.data!.data.length,
-              itemBuilder: (context, index) {
-                var result = snapshot.data!.data[index];
-
-                return ListTile(
-                  title: result.characters == ""
-                      ? SizedBox(
-                          width: 15,
-                          height: 15,
-                          child: ScalableImageWidget(
-                            alignment: Alignment.topLeft,
-                            si: ScalableImage.fromSvgString(
-                                result.characterImage),
-                          ),
-                        )
-                      : Text(result.characters),
-                );
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-
-          return const CircularProgressIndicator();
-        });
-  }
-}
-
-class SubjectPreview {
-  final int id;
-  final String object;
-  final String slug;
-  final String characters;
-  final String characterImage;
-  final List<String> meanings;
-  final List<String>? readings;
-
-  SubjectPreview({
-    required this.id,
-    required this.object,
-    required this.slug,
-    required this.characters,
-    required this.characterImage,
-    required this.meanings,
-    this.readings,
-  });
-
-  factory SubjectPreview.fromJson(Map<String, dynamic> json) {
-    return SubjectPreview(
-        id: json['id'],
-        object: json['object'],
-        slug: json['slug'],
-        characters: json['characters'],
-        characterImage: json['character_image'],
-        meanings: json['meanings'].cast<String>(),
-        readings:
-            // ignore: prefer_null_aware_operators
-            json['readings'] != null ? json['readings'].cast<String>() : null);
-  }
-}
-
-class SearchResponse {
-  final int totalCount;
-  final List<SubjectPreview> data;
-
-  SearchResponse({
-    required this.totalCount,
-    required this.data,
-  });
-
-  factory SearchResponse.fromJson(Map<String, dynamic> json) {
-    return SearchResponse(
-        totalCount: json['total_count'],
-        data: List<SubjectPreview>.from(
-            json['data'].map((x) => SubjectPreview.fromJson(x))));
-  }
-}
-
-Future<SearchResponse> fetchSearchResults(String query) async {
-  final response = await http
-      .get(Uri.parse('http://martingrzzler:5000/search?query=$query'));
-
-  if (response.statusCode == 200) {
-    return SearchResponse.fromJson(jsonDecode(response.body));
-  }
-  throw Exception('Failed to load search results');
 }
