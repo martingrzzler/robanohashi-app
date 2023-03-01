@@ -11,6 +11,32 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.grey[800],
+        ),
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey[500],
+          indicator: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Colors.grey,
+                width: 2.0,
+              ),
+            ),
+          ),
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Colors.grey[800],
+              displayColor: Colors.grey[800],
+            ),
+        colorScheme: const ColorScheme.light(
+          primary: Colors.grey,
+        ),
+      ),
       initialRoute: '/',
       routes: {
         '/': (context) => const Home(),

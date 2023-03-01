@@ -87,7 +87,7 @@ class KanjiReading {
 
 Future<Kanji> fetchKanji(int id) async {
   final response =
-      await http.get(Uri.parse('http://192.168.2.123:5000/kanji/$id'));
+      await http.get(Uri.parse('http://192.168.2.138:5000/kanji/$id'));
 
   if (response.statusCode != 200) {
     print('CODE: ${response.statusCode}');
