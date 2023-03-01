@@ -62,58 +62,105 @@ class _KanjiViewState extends State<KanjiView> {
 
           final data = snapshot.data as Kanji;
 
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SubjectCard(
-                          color: getSubjectBackgroundColor("kanji"),
-                          child: Text(data.characters,
-                              style: const TextStyle(
-                                  fontSize: 60, color: Colors.white))),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                data.meanings
-                                    .firstWhere((element) => element.primary)
-                                    .meaning,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[700])),
-                            const SizedBox(height: 5),
-                            Text(
-                                data.meanings
-                                    .where((element) => !element.primary)
-                                    .map((e) => e.meaning)
-                                    .join(', '),
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.grey[700])),
-                            const SizedBox(height: 13),
-                            KanjiReadings(readings: data.readings)
-                          ],
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubjectCard(
+                            color: getSubjectBackgroundColor("kanji"),
+                            child: Text(data.characters,
+                                style: const TextStyle(
+                                    fontSize: 60, color: Colors.white))),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  data.meanings
+                                      .firstWhere((element) => element.primary)
+                                      .meaning,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[700])),
+                              const SizedBox(height: 5),
+                              Text(
+                                  data.meanings
+                                      .where((element) => !element.primary)
+                                      .map((e) => e.meaning)
+                                      .join(', '),
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey[700])),
+                              const SizedBox(height: 13),
+                              KanjiReadings(readings: data.readings)
+                            ],
+                          ),
                         ),
-                      ),
-                      // 3. Primary reading
-                      // 4. Other readings
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Divider(),
-                  RadicalComposition(
-                    radicals: data.componentSubjects,
-                  ),
-                ]),
+                        // 3. Primary reading
+                        // 4. Other readings
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Divider(),
+                    RadicalComposition(
+                      radicals: data.componentSubjects,
+                    ),
+                    const Divider(),
+                    KanjiAmalgamation(
+                      vocabs: data.amalgamationSubjects,
+                    )
+                  ]),
+            ),
           );
         },
       ),
+    );
+  }
+}
+
+class KanjiAmalgamation extends StatelessWidget {
+  const KanjiAmalgamation({
+    super.key,
+    required this.vocabs,
+  });
+
+  final List<SubjectPreview> vocabs;
+
+  Widget _buildVocabulary(SubjectPreview vocabulary) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: SubjectCard(
+        color: getSubjectBackgroundColor('vocabulary'),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(vocabulary.characters,
+              style: const TextStyle(color: Colors.white, fontSize: 20)),
+          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Text(
+              vocabulary.meanings.first,
+              style: const TextStyle(color: Colors.white),
+            ),
+            Text(
+              vocabulary.readings!.first,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ])
+        ]),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: vocabs.map((e) => _buildVocabulary(e)).toList(),
     );
   }
 }
