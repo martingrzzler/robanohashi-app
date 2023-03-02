@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 
+import '../api/subject_preview.dart';
 import '../common/colors.dart';
 import '../common/subject_card.dart';
-import '../search/api.dart';
 
 class RadicalComposition extends StatelessWidget {
   const RadicalComposition({

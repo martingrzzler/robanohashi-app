@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 class SubjectPreview {
   final int id;
   final String object;
@@ -32,32 +29,4 @@ class SubjectPreview {
             // ignore: prefer_null_aware_operators
             json['readings'] != null ? json['readings'].cast<String>() : null);
   }
-}
-
-class SearchResponse {
-  final int totalCount;
-  final List<SubjectPreview> data;
-
-  SearchResponse({
-    required this.totalCount,
-    required this.data,
-  });
-
-  factory SearchResponse.fromJson(Map<String, dynamic> json) {
-    return SearchResponse(
-        totalCount: json['total_count'],
-        data: List<SubjectPreview>.from(
-            json['data'].map((x) => SubjectPreview.fromJson(x))));
-  }
-}
-
-Future<SearchResponse> fetchSearchResults(String query) async {
-  final response = await http
-      .get(Uri.parse('http://192.168.2.138:5000/search?query=$query'));
-
-  if (response.statusCode != 200) {
-    throw Exception('Failed to load search results');
-  }
-
-  return SearchResponse.fromJson(jsonDecode(response.body));
 }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/kanji/amalgamation.dart';
-import 'package:robanohashi/kanji/api.dart';
 import 'package:robanohashi/kanji/reading_mnemonic.dart';
-import 'package:robanohashi/main.dart';
+import 'package:robanohashi/api/api.dart';
 
+import '../api/kanji.dart';
 import 'components.dart';
 import 'readings.dart';
 
@@ -34,7 +33,7 @@ class _KanjiViewState extends State<KanjiView> {
   void initState() {
     super.initState();
 
-    kanji = fetchKanji(widget.id);
+    kanji = Api.fetchKanji(widget.id);
   }
 
   @override

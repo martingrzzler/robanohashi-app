@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
+import 'package:robanohashi/api/search.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/kanji/kanji.dart';
 
-import 'api.dart';
+import '../api/subject_preview.dart';
 
 class SearchResults extends StatelessWidget {
   const SearchResults({

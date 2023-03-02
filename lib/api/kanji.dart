@@ -1,6 +1,5 @@
-import 'package:http/http.dart' as http;
-import 'package:robanohashi/search/api.dart';
-import 'dart:convert';
+import 'common.dart';
+import 'subject_preview.dart';
 
 class Kanji {
   final int id;
@@ -9,7 +8,7 @@ class Kanji {
   final String slug;
   final String readingMnemonic;
   final List<KanjiReading> readings;
-  final List<KanjiMeaning> meanings;
+  final List<Meaning> meanings;
   final List<SubjectPreview> amalgamationSubjects;
   final List<SubjectPreview> componentSubjects;
   final List<SubjectPreview> visualSimilarSubjects;
@@ -41,27 +40,10 @@ class Kanji {
         amalgamationSubjects: List<SubjectPreview>.from(
             json['amalgamation_subjects']
                 .map((e) => SubjectPreview.fromJson(e))),
-        meanings: List<KanjiMeaning>.from(
-            json['meanings'].map((e) => KanjiMeaning.fromJson(e))),
+        meanings: List<Meaning>.from(
+            json['meanings'].map((e) => Meaning.fromJson(e))),
         readings: List<KanjiReading>.from(
             json['readings'].map((e) => KanjiReading.fromJson(e)).toList()));
-  }
-}
-
-class KanjiMeaning {
-  final String meaning;
-  final bool primary;
-
-  KanjiMeaning({
-    required this.meaning,
-    required this.primary,
-  });
-
-  factory KanjiMeaning.fromJson(Map<String, dynamic> json) {
-    return KanjiMeaning(
-      meaning: json['meaning'],
-      primary: json['primary'],
-    );
   }
 }
 
@@ -83,16 +65,4 @@ class KanjiReading {
       primary: json['primary'],
     );
   }
-}
-
-Future<Kanji> fetchKanji(int id) async {
-  final response =
-      await http.get(Uri.parse('http://192.168.2.138:5000/kanji/$id'));
-
-  if (response.statusCode != 200) {
-    print('CODE: ${response.statusCode}');
-    throw Exception('Failed to load kanji');
-  }
-
-  return Kanji.fromJson(jsonDecode(response.body));
 }

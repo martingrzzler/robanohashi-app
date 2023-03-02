@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:robanohashi/api/search.dart';
+import 'package:robanohashi/api/api.dart';
 
-import 'api.dart';
 import 'results.dart';
 
 class DictionarySearchDelegate extends SearchDelegate {
@@ -36,7 +37,7 @@ class DictionarySearchDelegate extends SearchDelegate {
       );
     }
 
-    searchResults = fetchSearchResults(query);
+    searchResults = Api.fetchSearchResults(query);
 
     return SearchResults(searchResults: searchResults);
   }
@@ -49,7 +50,7 @@ class DictionarySearchDelegate extends SearchDelegate {
       );
     }
 
-    searchResults = fetchSearchResults(query);
+    searchResults = Api.fetchSearchResults(query);
 
     return SearchResults(searchResults: searchResults);
   }

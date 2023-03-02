@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:robanohashi/api/subject_preview.dart';
 
 import '../common/colors.dart';
 import '../common/subject_card.dart';
-import '../search/api.dart';
 
 class KanjiAmalgamation extends StatelessWidget {
   const KanjiAmalgamation({

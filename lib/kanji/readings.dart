@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'api.dart';
+import '../api/kanji.dart';
 
 class KanjiReadings extends StatelessWidget {
   const KanjiReadings({
