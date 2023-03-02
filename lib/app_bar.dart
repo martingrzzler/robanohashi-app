@@ -18,11 +18,16 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       actions: [
         IconButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+            },
+            icon: const Icon(Icons.home)),
+        IconButton(
           onPressed: () {
             showSearch(context: context, delegate: DictionarySearchDelegate());
           },
           icon: const Icon(Icons.search),
-        )
+        ),
       ],
     );
   }

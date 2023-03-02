@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'app_bar.dart';
+import '../app_bar.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

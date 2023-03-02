@@ -3,8 +3,7 @@ import 'package:robanohashi/pages/kanji/kanji.dart';
 import 'package:robanohashi/pages/radical/radical.dart';
 import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 
-import 'home.dart';
-import 'search/search_delegate.dart';
+import 'pages/home.dart';
 
 void main() => runApp(const App());
 

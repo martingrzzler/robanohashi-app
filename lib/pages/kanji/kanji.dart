@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/composition.dart';
 import 'package:robanohashi/common/subject_card.dart';
@@ -39,9 +40,7 @@ class _KanjiViewState extends State<KanjiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Roba no hashi'),
-      ),
+      appBar: const CustomAppBar(),
       body: FutureBuilder(
         future: kanji,
         builder: (context, snapshot) {

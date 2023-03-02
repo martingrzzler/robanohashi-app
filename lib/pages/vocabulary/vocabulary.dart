@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/vocabulary.dart';
+import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/composition.dart';
@@ -35,9 +36,7 @@ class _VocabularyViewState extends State<VocabularyView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Roba no hashi'),
-      ),
+      appBar: const CustomAppBar(),
       body: FutureBuilder(
         future: vocabulary,
         builder: (context, snapshot) {

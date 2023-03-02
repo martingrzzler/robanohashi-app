@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/radical.dart';
+import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/pages/radical/amalgamation_list.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
@@ -36,9 +37,7 @@ class _RadicalViewState extends State<RadicalView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Roba no hashi'),
-      ),
+      appBar: const CustomAppBar(),
       body: FutureBuilder(
         future: radical,
         builder: (context, snapshot) {
