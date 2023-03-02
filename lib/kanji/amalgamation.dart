@@ -4,8 +4,8 @@ import 'package:robanohashi/api/subject_preview.dart';
 import '../common/colors.dart';
 import '../common/subject_card.dart';
 
-class KanjiAmalgamation extends StatelessWidget {
-  const KanjiAmalgamation({
+class AmalgamationList extends StatelessWidget {
+  const AmalgamationList({
     super.key,
     required this.vocabs,
   });

@@ -146,7 +146,7 @@ class _KanjiViewState extends State<KanjiView> {
                       ),
                       SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                          child: KanjiAmalgamation(
+                          child: AmalgamationList(
                               vocabs: data.amalgamationSubjects))
                     ]))
                   ]),

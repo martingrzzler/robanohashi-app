@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
+import 'package:robanohashi/radical/radical.dart';
 
 import '../api/subject_preview.dart';
 import '../common/colors.dart';
@@ -13,25 +14,32 @@ class RadicalComposition extends StatelessWidget {
 
   final List<SubjectPreview> radicals;
 
-  Widget _buildRadical(SubjectPreview radical) {
+  Widget _buildRadical(BuildContext context, SubjectPreview radical) {
     return Column(
       children: [
-        SubjectCard(
-          color: getSubjectBackgroundColor('radical'),
-          child: radical.characters != ""
-              ? Text(
-                  radical.characters,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 30.0,
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/radical',
+                arguments: RadicalViewArgs(id: radical.id));
+          },
+          child: SubjectCard(
+            color: getSubjectBackgroundColor('radical'),
+            child: radical.characters != ""
+                ? Text(
+                    radical.characters,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 30.0,
+                    ),
+                  )
+                : SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: ScalableImageWidget(
+                        si: ScalableImage.fromSvgString(
+                            radical.characterImage)),
                   ),
-                )
-              : SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: ScalableImageWidget(
-                      si: ScalableImage.fromSvgString(radical.characterImage)),
-                ),
+          ),
         ),
         const SizedBox(height: 2),
         Text(
@@ -52,7 +60,7 @@ class RadicalComposition extends StatelessWidget {
           children:
               List.generate(radicals.length + radicals.length - 1, (index) {
             return (index % 2 == 0)
-                ? _buildRadical(radicals[index ~/ 2])
+                ? _buildRadical(context, radicals[index ~/ 2])
                 : Text('+',
                     style: TextStyle(fontSize: 25, color: Colors.grey[700]));
           }),

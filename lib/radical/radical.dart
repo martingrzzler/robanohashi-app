@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/radical.dart';
-import 'package:robanohashi/common/amalgamation_list.dart';
+import 'package:robanohashi/radical/amalgamation_list.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';
@@ -116,35 +116,17 @@ class _RadicalViewState extends State<RadicalView> {
                       ],
                     ),
                     const Divider(),
-                    SizedBox(
-                      height: 50,
-                      child: AppBar(
-                        bottom:
-                            const TabBar(indicatorColor: Colors.grey, tabs: [
-                          Tab(
-                            text: 'Meaning',
-                          ),
-                          Tab(
-                            text: 'Kanji',
-                          ),
-                        ]),
-                      ),
-                    ),
+                    TaggedMnemonic(
+                        mnemonic: data.meaningMnemonic,
+                        tags: const {Tag.ja, Tag.radical}),
                     const SizedBox(
                       height: 10,
                     ),
                     Expanded(
-                      child: TabBarView(
-                        children: [
-                          TaggedMnemonic(
-                              mnemonic: data.meaningMnemonic,
-                              tags: const {Tag.ja, Tag.radical}),
-                          AmalgamationList(
-                              amalgamation: data.amalgamationSubjects,
-                              color: getSubjectBackgroundColor("kanji")),
-                        ],
-                      ),
-                    )
+                      child: AmalgamationGrid(
+                          amalgamation: data.amalgamationSubjects,
+                          color: getSubjectBackgroundColor("kanji")),
+                    ),
                   ],
                 ),
               ));
