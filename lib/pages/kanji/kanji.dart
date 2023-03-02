@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'package:flutter/material.dart';
 import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
@@ -104,8 +107,6 @@ class _KanjiViewState extends State<KanjiView> {
                             ],
                           ),
                         ),
-                        // 3. Primary reading
-                        // 4. Other readings
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -136,7 +137,7 @@ class _KanjiViewState extends State<KanjiView> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      const Placeholder(),
+                      const MeaningMnemonics(),
                       TaggedMnemonic(
                         mnemonic: data.readingMnemonic,
                         tags: const {Tag.ja, Tag.kanji, Tag.reading},
@@ -149,5 +150,73 @@ class _KanjiViewState extends State<KanjiView> {
         },
       ),
     );
+  }
+}
+
+class MeaningMnemonics extends StatelessWidget {
+  const MeaningMnemonics({
+    super.key,
+  });
+
+  static const String mnemonic =
+      'The meaning of this kanji is "to write". It is made up of the radical "to write" (曰) and the kanji "to write" (文). And it is pronounced "bun". And so, the meaning of this kanji is "to write". very cool kanji. I like it. generate a lot of text to test the layout. I hope this will never happen in real life. LOL generate more t';
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.star_border)),
+                  Row(children: [
+                    Transform.rotate(
+                      angle: pi / 2,
+                      child: IconButton(
+                        iconSize: 30,
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.chevron_left,
+                        ),
+                      ),
+                    ),
+                    const Text('16'),
+                    Transform.rotate(
+                        angle: -pi / 2,
+                        child: IconButton(
+                            iconSize: 30,
+                            onPressed: () {},
+                            icon: const Icon(Icons.chevron_left)))
+                  ]),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  const Text(
+                    'username',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(timeago.format(
+                      DateTime.now().subtract(const Duration(days: 700)))),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Expanded(
+                    child: Text(
+                      mnemonic,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
+              const Divider()
+            ],
+          );
+        });
   }
 }
