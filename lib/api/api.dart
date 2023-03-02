@@ -1,3 +1,5 @@
+import 'package:robanohashi/api/vocabulary.dart';
+
 import 'kanji.dart';
 import 'radical.dart';
 import 'search.dart';
@@ -35,5 +37,15 @@ class Api {
     }
 
     return Radical.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<Vocabulary> fetchVocabulary(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/vocabulary/$id'));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load vocabulary');
+    }
+
+    return Vocabulary.fromJson(jsonDecode(response.body));
   }
 }

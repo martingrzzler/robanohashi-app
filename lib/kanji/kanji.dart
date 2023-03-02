@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/common/colors.dart';
+import 'package:robanohashi/common/composition.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';
 import 'package:robanohashi/kanji/amalgamation.dart';
 import 'package:robanohashi/api/api.dart';
 
 import '../api/kanji.dart';
-import 'components.dart';
 import 'readings.dart';
 
 class KanjiViewArgs {
@@ -111,28 +111,26 @@ class _KanjiViewState extends State<KanjiView> {
                     ),
                     const SizedBox(height: 10),
                     const Divider(),
-                    RadicalComposition(
-                      radicals: data.componentSubjects,
+                    Composition(
+                      components: data.componentSubjects,
+                      object: ComponentType.radical,
                     ),
                     const SizedBox(
                       height: 5,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
-                      child: AppBar(
-                        bottom:
-                            const TabBar(indicatorColor: Colors.grey, tabs: [
-                          Tab(
-                            text: 'Meaning',
-                          ),
-                          Tab(
-                            text: 'Reading',
-                          ),
-                          Tab(
-                            text: 'Vocabulary',
-                          )
-                        ]),
-                      ),
+                      child: TabBar(tabs: [
+                        Tab(
+                          text: 'Meaning',
+                        ),
+                        Tab(
+                          text: 'Reading',
+                        ),
+                        Tab(
+                          text: 'Vocabulary',
+                        )
+                      ]),
                     ),
                     const SizedBox(
                       height: 10,
@@ -144,10 +142,7 @@ class _KanjiViewState extends State<KanjiView> {
                         mnemonic: data.readingMnemonic,
                         tags: const {Tag.ja, Tag.kanji, Tag.reading},
                       ),
-                      SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: AmalgamationList(
-                              vocabs: data.amalgamationSubjects))
+                      AmalgamationList(vocabs: data.amalgamationSubjects)
                     ]))
                   ]),
             ),

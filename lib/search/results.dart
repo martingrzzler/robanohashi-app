@@ -5,6 +5,7 @@ import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/kanji/kanji.dart';
 import 'package:robanohashi/radical/radical.dart';
+import 'package:robanohashi/vocabulary/vocabulary.dart';
 
 import '../api/subject_preview.dart';
 
@@ -73,6 +74,10 @@ class SearchTile extends StatelessWidget {
       case 'kanji':
         Navigator.pushNamed(context, '/kanji',
             arguments: KanjiViewArgs(id: subject.id));
+        break;
+      case 'vocabulary':
+        Navigator.pushNamed(context, '/vocabulary',
+            arguments: VocabularyViewArgs(id: subject.id));
         break;
     }
   }

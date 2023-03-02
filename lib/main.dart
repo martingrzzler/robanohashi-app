@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/kanji/kanji.dart';
 import 'package:robanohashi/radical/radical.dart';
+import 'package:robanohashi/vocabulary/vocabulary.dart';
 
 import 'search/search_delegate.dart';
 
@@ -54,6 +55,11 @@ class App extends StatelessWidget {
             final args = settings.arguments as RadicalViewArgs;
             return MaterialPageRoute(
               builder: (context) => RadicalView(id: args.id),
+            );
+          case VocabularyView.routeName:
+            final args = settings.arguments as VocabularyViewArgs;
+            return MaterialPageRoute(
+              builder: (context) => VocabularyView(id: args.id),
             );
           default:
             throw Exception('Unknown route: ${settings.name}');
