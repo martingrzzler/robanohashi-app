@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/api/subject_preview.dart';
-import 'package:robanohashi/vocabulary/vocabulary.dart';
+import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 
-import '../common/colors.dart';
-import '../common/subject_card.dart';
+import '../../common/colors.dart';
+import '../../common/subject_card.dart';
 
 class AmalgamationList extends StatelessWidget {
   const AmalgamationList({

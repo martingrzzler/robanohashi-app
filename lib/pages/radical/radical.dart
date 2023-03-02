@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/radical.dart';
-import 'package:robanohashi/radical/amalgamation_list.dart';
+import 'package:robanohashi/pages/radical/amalgamation_list.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';

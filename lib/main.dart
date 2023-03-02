@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:robanohashi/kanji/kanji.dart';
-import 'package:robanohashi/radical/radical.dart';
-import 'package:robanohashi/vocabulary/vocabulary.dart';
+import 'package:robanohashi/pages/kanji/kanji.dart';
+import 'package:robanohashi/pages/radical/radical.dart';
+import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 
+import 'home.dart';
 import 'search/search_delegate.dart';
 
 void main() => runApp(const App());
@@ -42,7 +43,6 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const Home(),
-        // '/kanji': (context) => const KanjiView(),
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {
@@ -65,36 +65,6 @@ class App extends StatelessWidget {
             throw Exception('Unknown route: ${settings.name}');
         }
       },
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Roba no hashi",
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(
-                  context: context, delegate: DictionarySearchDelegate());
-            },
-            icon: const Icon(Icons.search),
-          )
-        ],
-      ),
-      body: const Placeholder(),
     );
   }
 }

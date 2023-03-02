@@ -3,10 +3,10 @@ import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/composition.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';
-import 'package:robanohashi/kanji/amalgamation.dart';
+import 'package:robanohashi/pages/kanji/amalgamation.dart';
 import 'package:robanohashi/api/api.dart';
 
-import '../api/kanji.dart';
+import '../../api/kanji.dart';
 import 'readings.dart';
 
 class KanjiViewArgs {

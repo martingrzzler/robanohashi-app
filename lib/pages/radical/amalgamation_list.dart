@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/api/subject_preview.dart';
-import 'package:robanohashi/kanji/kanji.dart';
+import 'package:robanohashi/pages/kanji/kanji.dart';
 
-import '../common/colors.dart';
-import '../common/subject_card.dart';
+import '../../common/colors.dart';
+import '../../common/subject_card.dart';
 
 class AmalgamationGrid extends StatelessWidget {
   const AmalgamationGrid({

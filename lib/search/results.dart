@@ -3,9 +3,9 @@ import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/api/search.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
-import 'package:robanohashi/kanji/kanji.dart';
-import 'package:robanohashi/radical/radical.dart';
-import 'package:robanohashi/vocabulary/vocabulary.dart';
+import 'package:robanohashi/pages/kanji/kanji.dart';
+import 'package:robanohashi/pages/radical/radical.dart';
+import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 
 import '../api/subject_preview.dart';
 
