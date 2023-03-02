@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/kanji/kanji.dart';
+import 'package:robanohashi/radical/radical.dart';
 
 import 'search/search_delegate.dart';
 
@@ -43,11 +44,19 @@ class App extends StatelessWidget {
         // '/kanji': (context) => const KanjiView(),
       },
       onGenerateRoute: (settings) {
-        if (settings.name == KanjiView.routeName) {
-          final args = settings.arguments as KanjiViewArgs;
-          return MaterialPageRoute(
-            builder: (context) => KanjiView(id: args.id),
-          );
+        switch (settings.name) {
+          case KanjiView.routeName:
+            final args = settings.arguments as KanjiViewArgs;
+            return MaterialPageRoute(
+              builder: (context) => KanjiView(id: args.id),
+            );
+          case RadicalView.routeName:
+            final args = settings.arguments as RadicalViewArgs;
+            return MaterialPageRoute(
+              builder: (context) => RadicalView(id: args.id),
+            );
+          default:
+            throw Exception('Unknown route: ${settings.name}');
         }
       },
     );

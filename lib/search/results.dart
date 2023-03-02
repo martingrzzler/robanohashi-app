@@ -4,6 +4,7 @@ import 'package:robanohashi/api/search.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/kanji/kanji.dart';
+import 'package:robanohashi/radical/radical.dart';
 
 import '../api/subject_preview.dart';
 
@@ -63,12 +64,24 @@ class SearchTile extends StatelessWidget {
 
   final SubjectPreview subject;
 
+  _navigate(BuildContext context) {
+    switch (subject.object) {
+      case 'radical':
+        Navigator.pushNamed(context, '/radical',
+            arguments: RadicalViewArgs(id: subject.id));
+        break;
+      case 'kanji':
+        Navigator.pushNamed(context, '/kanji',
+            arguments: KanjiViewArgs(id: subject.id));
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/kanji',
-            arguments: KanjiViewArgs(id: subject.id));
+        _navigate(context);
       },
       child: ListTile(
         trailing: const Icon(Icons.chevron_right),

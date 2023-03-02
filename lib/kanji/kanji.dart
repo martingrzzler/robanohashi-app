@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
+import 'package:robanohashi/common/tagged_mnemonic.dart';
 import 'package:robanohashi/kanji/amalgamation.dart';
-import 'package:robanohashi/kanji/reading_mnemonic.dart';
 import 'package:robanohashi/api/api.dart';
 
 import '../api/kanji.dart';
@@ -140,7 +140,10 @@ class _KanjiViewState extends State<KanjiView> {
                     Expanded(
                         child: TabBarView(children: [
                       const Placeholder(),
-                      KanjiReadingMnemonic(mnemonic: data.readingMnemonic),
+                      TaggedMnemonic(
+                        mnemonic: data.readingMnemonic,
+                        tags: const {Tag.ja, Tag.kanji, Tag.reading},
+                      ),
                       SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           child: KanjiAmalgamation(
