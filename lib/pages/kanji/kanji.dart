@@ -137,7 +137,7 @@ class _KanjiViewState extends State<KanjiView> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      const MeaningMnemonics(),
+                      MeaningMnemonics(),
                       TaggedMnemonic(
                         mnemonic: data.readingMnemonic,
                         tags: const {Tag.ja, Tag.kanji, Tag.reading},
@@ -153,8 +153,8 @@ class _KanjiViewState extends State<KanjiView> {
   }
 }
 
-class MeaningMnemonics extends StatelessWidget {
-  const MeaningMnemonics({
+class MeaningMnemonics extends StatefulWidget {
+  MeaningMnemonics({
     super.key,
   });
 
@@ -162,10 +162,79 @@ class MeaningMnemonics extends StatelessWidget {
       'The meaning of this kanji is "to write". It is made up of the radical "to write" (曰) and the kanji "to write" (文). And it is pronounced "bun". And so, the meaning of this kanji is "to write". very cool kanji. I like it. generate a lot of text to test the layout. I hope this will never happen in real life. LOL generate more t';
 
   @override
+  State<MeaningMnemonics> createState() => _MeaningMnemonicsState();
+}
+
+class _MeaningMnemonicsState extends State<MeaningMnemonics> {
+  bool _showForm = false;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) {
+    if (_showForm) {
+      return Form(
+        key: _formKey,
+        child: Stack(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 40.0, top: 25),
+                  child: TextFormField(
+                    maxLines: 50,
+                    autofocus: true,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500),
+                    decoration: const InputDecoration(
+                        hintText: 'The more absurd the better...'),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Material(
+                  color: Colors.transparent,
+                  child: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.send))),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Material(
+                color: Colors.transparent,
+                child: IconButton(
+                    onPressed: () => setState(() {
+                          _showForm = false;
+                        }),
+                    icon: const Icon(Icons.close)),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return ListView.builder(
-        itemCount: 3,
+        itemCount: 5,
         itemBuilder: (context, index) {
+          if (index == 0) {
+            return ElevatedButton.icon(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                setState(() {
+                  _showForm = true;
+                });
+              },
+              label: const Text('Add a mnemonic'),
+            );
+          }
           return Column(
             children: [
               Row(
@@ -205,10 +274,10 @@ class MeaningMnemonics extends StatelessWidget {
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Expanded(
+                children: const [
+                  Expanded(
                     child: Text(
-                      mnemonic,
+                      MeaningMnemonics.mnemonic,
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
