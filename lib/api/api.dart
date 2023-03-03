@@ -1,3 +1,4 @@
+import 'package:robanohashi/api/meaning_mnemonic.dart';
 import 'package:robanohashi/api/vocabulary.dart';
 
 import 'kanji.dart';
@@ -47,5 +48,18 @@ class Api {
     }
 
     return Vocabulary.fromJson(jsonDecode(response.body));
+  }
+
+  static Future<List<MeaningMnemonic>> fetchMeaningMnemonics(
+      int subjectId) async {
+    final response = await http
+        .get(Uri.parse('$baseUrl/subject/$subjectId/meaning_mnemonics'));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load meaning mnemonics');
+    }
+
+    return List<MeaningMnemonic>.from(jsonDecode(response.body)["data"]
+        .map((e) => MeaningMnemonic.fromJson(e)));
   }
 }

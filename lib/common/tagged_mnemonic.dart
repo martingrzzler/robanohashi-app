@@ -6,6 +6,7 @@ enum Tag {
   kanji,
   reading,
   radical,
+  vocabulary,
 }
 
 extension TagExtension on Tag {
@@ -19,6 +20,8 @@ extension TagExtension on Tag {
         return 'reading';
       case Tag.radical:
         return 'radical';
+      case Tag.vocabulary:
+        return 'vocabulary';
       default:
         throw Exception('unsupported tag');
     }
@@ -68,6 +71,10 @@ class TaggedMnemonic extends StatelessWidget {
       return TextStyle(
           fontWeight: FontWeight.w900,
           color: getSubjectBackgroundColor('radical'));
+    } else if (token.contains("<${Tag.vocabulary.string}>")) {
+      return TextStyle(
+          fontWeight: FontWeight.w900,
+          color: getSubjectBackgroundColor('vocabulary'));
     } else {
       throw Exception('unsupported token');
     }
@@ -75,7 +82,6 @@ class TaggedMnemonic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('LOG: ${_buildFindRegex()}');
     RegExp findExp = _buildFindRegex();
     RegExp removeExp = _buildRemoveRegex();
 

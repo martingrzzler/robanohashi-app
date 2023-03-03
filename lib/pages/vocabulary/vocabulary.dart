@@ -3,6 +3,7 @@ import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/vocabulary.dart';
 import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
+import 'package:robanohashi/common/meaning_mnemonics.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/composition.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';
@@ -139,7 +140,9 @@ class _VocabularyViewState extends State<VocabularyView> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      const Placeholder(),
+                      MeaningMnemonics(
+                        subjectId: widget.id,
+                      ),
                       TaggedMnemonic(
                           mnemonic: data.readingMnemonic,
                           tags: const {Tag.kanji, Tag.ja, Tag.reading}),
