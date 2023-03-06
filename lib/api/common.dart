@@ -14,3 +14,8 @@ class Meaning {
     );
   }
 }
+
+abstract class Subject {
+  int get id;
+  String get object;
+}

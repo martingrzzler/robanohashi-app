@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:robanohashi/api/common.dart';
 import 'package:robanohashi/api/meaning_mnemonic.dart';
+import 'package:robanohashi/api/subject_preview.dart';
 import 'package:robanohashi/api/vocabulary.dart';
 
 import 'kanji.dart';
@@ -61,5 +64,27 @@ class Api {
 
     return List<MeaningMnemonic>.from(jsonDecode(response.body)["data"]
         .map((e) => MeaningMnemonic.fromJson(e)));
+  }
+
+  static Future<Map<String, dynamic>> createMeaningMnemonic(
+      Subject subject, User user, String mnemonic) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/meaning_mnemonic'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${await user.getIdToken()}'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'object': subject.object,
+        'subject_id': subject.id,
+        'text': mnemonic,
+      }),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to create meaning mnemonic');
+    }
+
+    return jsonDecode(response.body);
   }
 }

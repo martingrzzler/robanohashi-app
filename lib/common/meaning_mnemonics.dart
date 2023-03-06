@@ -1,5 +1,9 @@
 import 'dart:math';
+import 'package:provider/provider.dart';
+import 'package:robanohashi/api/common.dart';
+import 'package:robanohashi/api/subject_preview.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';
+import 'package:robanohashi/service/auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:flutter/material.dart';
@@ -9,10 +13,10 @@ import 'package:robanohashi/api/meaning_mnemonic.dart';
 class MeaningMnemonics extends StatefulWidget {
   const MeaningMnemonics({
     super.key,
-    required this.subjectId,
+    required this.subject,
   });
 
-  final int subjectId;
+  final Subject subject;
 
   @override
   State<MeaningMnemonics> createState() => _MeaningMnemonicsState();
@@ -20,14 +24,14 @@ class MeaningMnemonics extends StatefulWidget {
 
 class _MeaningMnemonicsState extends State<MeaningMnemonics> {
   bool _showForm = false;
-  final _formKey = GlobalKey<FormState>();
+  bool _loading = false;
   late Future<List<MeaningMnemonic>> _mnemonics;
 
   @override
   void initState() {
     super.initState();
 
-    _mnemonics = Api.fetchMeaningMnemonics(widget.subjectId);
+    _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id);
   }
 
   @override
@@ -36,10 +40,46 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
       future: _mnemonics,
       builder: (context, snapshot) {
         if (_showForm) {
-          return _buildForm();
+          return MnemonicForm(
+            onClose: () {
+              setState(() {
+                _showForm = false;
+              });
+            },
+            onSubmit: (text) async {
+              setState(() {
+                _showForm = false;
+              });
+              final user = context.read<AuthService>().currentUser;
+
+              if (user == null) {
+                Navigator.pushNamed(context, '/login');
+                return;
+              }
+              try {
+                setState(() {
+                  _loading = true;
+                });
+                await Api.createMeaningMnemonic(widget.subject, user, text);
+                setState(() {
+                  _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id);
+                });
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Failed to create mnemonic'),
+                  ),
+                );
+              } finally {
+                setState(() {
+                  _loading = false;
+                });
+              }
+            },
+          );
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting || _loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -66,6 +106,11 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                 return ElevatedButton.icon(
                   icon: const Icon(Icons.add),
                   onPressed: () {
+                    if (context.read<AuthService>().currentUser == null) {
+                      Navigator.pushNamed(context, '/login');
+                      return;
+                    }
+
                     setState(() {
                       _showForm = true;
                     });
@@ -136,30 +181,58 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
       },
     );
   }
+}
 
-  Form _buildForm() {
+class MnemonicForm extends StatefulWidget {
+  const MnemonicForm(
+      {super.key, required this.onClose, required this.onSubmit});
+
+  final Function onClose;
+  final Function(String text) onSubmit;
+
+  @override
+  State<MnemonicForm> createState() => MnemonicFormState();
+}
+
+class MnemonicFormState extends State<MnemonicForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Stack(
         children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 40.0, top: 25),
-                child: TextFormField(
-                  maxLines: 50,
-                  autofocus: true,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
-                  decoration: const InputDecoration(
-                      hintText: 'The more absurd the better...'),
-                ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 40.0, top: 25),
+              child: TextFormField(
+                controller: _controller,
+                maxLines: 50,
+                autofocus: true,
+                style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500),
+                decoration: const InputDecoration(
+                    hintText: 'The more absurd the better...'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
               ),
             ),
           ),
@@ -167,17 +240,20 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
             alignment: Alignment.bottomRight,
             child: Material(
                 color: Colors.transparent,
-                child:
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.send))),
+                child: IconButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        widget.onSubmit(_controller.text);
+                      }
+                    },
+                    icon: const Icon(Icons.send))),
           ),
           Align(
             alignment: Alignment.topRight,
             child: Material(
               color: Colors.transparent,
               child: IconButton(
-                  onPressed: () => setState(() {
-                        _showForm = false;
-                      }),
+                  onPressed: () => widget.onClose(),
                   icon: const Icon(Icons.close)),
             ),
           ),

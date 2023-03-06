@@ -1,8 +1,10 @@
 import 'package:robanohashi/api/common.dart';
 import 'package:robanohashi/api/subject_preview.dart';
 
-class Vocabulary {
+class Vocabulary implements Subject {
+  @override
   final int id;
+  @override
   final String object;
   final String slug;
   final String characters;

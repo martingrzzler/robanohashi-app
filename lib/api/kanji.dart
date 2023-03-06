@@ -1,8 +1,10 @@
 import 'common.dart';
 import 'subject_preview.dart';
 
-class Kanji {
+class Kanji implements Subject {
+  @override
   final int id;
+  @override
   final String object;
   final String characters;
   final String slug;

@@ -15,15 +15,12 @@ import 'pages/home.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  print("LOG ${Firebase.apps}");
-  print("LOG initializing Firebase");
   try {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
   } catch (e) {
     print("LOG error initializing Firebase: $e");
   }
-  print("LOG done with Firebase");
   FirebaseUIAuth.configureProviders([
     EmailAuthProvider(),
     GoogleProvider(
@@ -86,7 +83,7 @@ class App extends StatelessWidget {
                     if (!state.user!.emailVerified) {
                       Navigator.pushNamed(context, '/verify-email');
                     } else {
-                      Navigator.pushReplacementNamed(context, '/');
+                      Navigator.pop(context);
                     }
                   }),
                   AuthStateChangeAction<UserCreated>((context, state) {

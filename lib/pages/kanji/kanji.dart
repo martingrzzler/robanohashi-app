@@ -135,7 +135,7 @@ class _KanjiViewState extends State<KanjiView> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      MeaningMnemonics(subjectId: widget.id),
+                      MeaningMnemonics(subject: data),
                       TaggedMnemonic(
                         mnemonic: data.readingMnemonic,
                         tags: const {Tag.ja, Tag.kanji, Tag.reading},

@@ -141,7 +141,7 @@ class _VocabularyViewState extends State<VocabularyView> {
                     Expanded(
                         child: TabBarView(children: [
                       MeaningMnemonics(
-                        subjectId: widget.id,
+                        subject: data,
                       ),
                       TaggedMnemonic(
                           mnemonic: data.readingMnemonic,

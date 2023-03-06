@@ -1,5 +1,5 @@
 class MeaningMnemonic {
-  final int id;
+  final String id;
   final String text;
   final int votingCount;
   final String subjectId;
