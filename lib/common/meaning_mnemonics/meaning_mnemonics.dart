@@ -32,7 +32,10 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
   void initState() {
     super.initState();
 
-    _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id);
+    _mnemonics = Api.fetchMeaningMnemonics(
+      widget.subject.id,
+      context.read<AuthService>().currentUser,
+    );
   }
 
   String _getUsername(String mnemonicUserId, User? user) {
@@ -81,8 +84,6 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
               setState(() {
                 _showForm = false;
               });
-              final user = context.read<AuthService>().currentUser;
-
               if (user == null) {
                 Navigator.pushNamed(context, '/login');
                 return;
@@ -93,7 +94,8 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                 });
                 await Api.createMeaningMnemonic(widget.subject, user, text);
                 setState(() {
-                  _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id);
+                  _mnemonics =
+                      Api.fetchMeaningMnemonics(widget.subject.id, user);
                 });
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -164,9 +166,30 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                           angle: pi / 2,
                           child: IconButton(
                             iconSize: 30,
-                            onPressed: () {},
-                            icon: const Icon(
+                            onPressed: () async {
+                              if (user == null) {
+                                Navigator.pushNamed(context, '/login');
+                                return;
+                              }
+
+                              try {
+                                await Api.voteMeaningMnemonic(
+                                    1, mnemonic.id, user);
+                                setState(() {
+                                  _mnemonics = Api.fetchMeaningMnemonics(
+                                      widget.subject.id, user);
+                                });
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Failed to vote'),
+                                  ),
+                                );
+                              }
+                            },
+                            icon: Icon(
                               Icons.chevron_left,
+                              color: mnemonic.upvoted! ? Colors.orange : null,
                             ),
                           ),
                         ),
@@ -174,9 +197,30 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                         Transform.rotate(
                             angle: -pi / 2,
                             child: IconButton(
-                                iconSize: 30,
-                                onPressed: () {},
-                                icon: const Icon(Icons.chevron_left)))
+                              iconSize: 30,
+                              onPressed: () async {
+                                if (user == null) {
+                                  Navigator.pushNamed(context, '/login');
+                                  return;
+                                }
+                                try {
+                                  await Api.voteMeaningMnemonic(
+                                      -1, mnemonic.id, user);
+                                  setState(() {
+                                    _mnemonics = Api.fetchMeaningMnemonics(
+                                        widget.subject.id, user);
+                                  });
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Failed to vote'),
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.chevron_left),
+                              color: mnemonic.downvoted! ? Colors.orange : null,
+                            ))
                       ]),
                       Expanded(
                         child: Container(),

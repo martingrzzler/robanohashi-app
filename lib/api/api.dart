@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:robanohashi/api/common.dart';
 import 'package:robanohashi/api/meaning_mnemonic.dart';
-import 'package:robanohashi/api/subject_preview.dart';
 import 'package:robanohashi/api/vocabulary.dart';
 
 import 'kanji.dart';
@@ -54,9 +53,14 @@ class Api {
   }
 
   static Future<List<MeaningMnemonic>> fetchMeaningMnemonics(
-      int subjectId) async {
-    final response = await http
-        .get(Uri.parse('$baseUrl/subject/$subjectId/meaning_mnemonics'));
+      int subjectId, User? user) async {
+    final headers = user != null
+        ? <String, String>{'Authorization': 'Bearer ${await user.getIdToken()}'}
+        : <String, String>{};
+
+    final response = await http.get(
+        Uri.parse('$baseUrl/subject/$subjectId/meaning_mnemonics'),
+        headers: headers);
 
     if (response.statusCode != 200) {
       throw Exception('Failed to load meaning mnemonics');
@@ -83,6 +87,26 @@ class Api {
 
     if (response.statusCode != 201) {
       throw Exception('Failed to create meaning mnemonic');
+    }
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> voteMeaningMnemonic(
+      int vote, String mnemonicId, User user) async {
+    final response =
+        await http.post(Uri.parse('$baseUrl/meaning_mnemonic/vote'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer ${await user.getIdToken()}'
+            },
+            body: jsonEncode(<String, dynamic>{
+              'vote': vote,
+              'meaning_mnemonic_id': mnemonicId,
+            }));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to vote meaning mnemonic');
     }
 
     return jsonDecode(response.body);

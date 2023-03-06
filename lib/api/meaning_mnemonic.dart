@@ -6,6 +6,8 @@ class MeaningMnemonic {
   final String subjectId;
   final int createdAt;
   final int updatedAt;
+  final bool? upvoted;
+  final bool? downvoted;
 
   MeaningMnemonic({
     required this.id,
@@ -15,6 +17,8 @@ class MeaningMnemonic {
     required this.subjectId,
     required this.createdAt,
     required this.updatedAt,
+    this.downvoted,
+    this.upvoted,
   });
 
   factory MeaningMnemonic.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,8 @@ class MeaningMnemonic {
       subjectId: json['subject_id'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      upvoted: json['upvoted'] ?? false,
+      downvoted: json['downvoted'] ?? false,
     );
   }
 }
