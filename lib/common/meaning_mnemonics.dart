@@ -1,7 +1,7 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:robanohashi/api/common.dart';
-import 'package:robanohashi/api/subject_preview.dart';
 import 'package:robanohashi/common/tagged_mnemonic.dart';
 import 'package:robanohashi/service/auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -34,8 +34,22 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
     _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id);
   }
 
+  String _getUsername(String mnemonicUserId, User? user) {
+    if (user != null && mnemonicUserId == user.uid) {
+      return 'You';
+    } else if (mnemonicUserId == 'wanikani') {
+      return 'WaniKani';
+    } else if (mnemonicUserId == 'ai_generated') {
+      return 'AI Generated';
+    } else {
+      return 'by User';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthService>().currentUser;
+
     return FutureBuilder(
       future: _mnemonics,
       builder: (context, snapshot) {
@@ -139,7 +153,7 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                             ),
                           ),
                         ),
-                        const Text('16'),
+                        Text(mnemonic.votingCount.toString()),
                         Transform.rotate(
                             angle: -pi / 2,
                             child: IconButton(
@@ -150,9 +164,9 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                       Expanded(
                         child: Container(),
                       ),
-                      const Text(
-                        'username',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      Text(
+                        _getUsername(mnemonic.userId, user),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 5),
                       Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(

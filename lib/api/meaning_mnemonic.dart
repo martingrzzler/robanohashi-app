@@ -1,6 +1,7 @@
 class MeaningMnemonic {
   final String id;
   final String text;
+  final String userId;
   final int votingCount;
   final String subjectId;
   final int createdAt;
@@ -9,6 +10,7 @@ class MeaningMnemonic {
   MeaningMnemonic({
     required this.id,
     required this.text,
+    required this.userId,
     required this.votingCount,
     required this.subjectId,
     required this.createdAt,
@@ -19,6 +21,7 @@ class MeaningMnemonic {
     return MeaningMnemonic(
       id: json['id'],
       text: json['text'],
+      userId: json['user_id'],
       votingCount: json['voting_count'],
       subjectId: json['subject_id'],
       createdAt: json['created_at'],
