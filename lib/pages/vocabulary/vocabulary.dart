@@ -3,10 +3,10 @@ import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/vocabulary.dart';
 import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
-import 'package:robanohashi/common/meaning_mnemonics.dart';
+import 'package:robanohashi/common/meaning_mnemonics/meaning_mnemonics.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/composition.dart';
-import 'package:robanohashi/common/tagged_mnemonic.dart';
+import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
 
 import 'examples.dart';
 

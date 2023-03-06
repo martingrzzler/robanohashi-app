@@ -2,7 +2,8 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:robanohashi/api/common.dart';
-import 'package:robanohashi/common/tagged_mnemonic.dart';
+import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
+import 'package:robanohashi/common/meaning_mnemonics/untagged_mnemonic.dart';
 import 'package:robanohashi/service/auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -44,6 +45,22 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
     } else {
       return 'by User';
     }
+  }
+
+  Map<String, Token> _getCompositionTokens() {
+    final tokens = <String, Token>{};
+    for (final token in widget.subject.componentSubjects
+        .map((e) => e.meanings.first)
+        .toList()) {
+      tokens[token] =
+          widget.subject.object == 'kanji' ? Token.radical : Token.kanji;
+    }
+
+    for (final meaning in widget.subject.meanings) {
+      tokens[meaning.meaning] =
+          widget.subject.object == 'kanji' ? Token.kanji : Token.vocabulary;
+    }
+    return tokens;
   }
 
   @override
@@ -177,14 +194,18 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: TaggedMnemonic(
-                            mnemonic: mnemonic.text,
-                            tags: const {
-                              Tag.kanji,
-                              Tag.radical,
-                              Tag.vocabulary,
-                              Tag.ja,
-                            }),
+                        child: mnemonic.userId == 'wanikani'
+                            ? TaggedMnemonic(
+                                mnemonic: mnemonic.text,
+                                tags: const {
+                                    Tag.kanji,
+                                    Tag.radical,
+                                    Tag.vocabulary,
+                                    Tag.ja,
+                                  })
+                            : UntaggedMnemonic(
+                                text: mnemonic.text,
+                                meanings: _getCompositionTokens()),
                       ),
                     ],
                   ),

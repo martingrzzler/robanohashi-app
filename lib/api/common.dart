@@ -1,3 +1,5 @@
+import 'package:robanohashi/api/subject_preview.dart';
+
 class Meaning {
   final String meaning;
   final bool primary;
@@ -18,4 +20,6 @@ class Meaning {
 abstract class Subject {
   int get id;
   String get object;
+  List<SubjectPreview> get componentSubjects;
+  List<Meaning> get meanings;
 }

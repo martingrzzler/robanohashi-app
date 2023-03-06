@@ -10,8 +10,10 @@ class Kanji implements Subject {
   final String slug;
   final String readingMnemonic;
   final List<KanjiReading> readings;
+  @override
   final List<Meaning> meanings;
   final List<SubjectPreview> amalgamationSubjects;
+  @override
   final List<SubjectPreview> componentSubjects;
   final List<SubjectPreview> visualSimilarSubjects;
 

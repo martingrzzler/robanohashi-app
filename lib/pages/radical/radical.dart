@@ -6,7 +6,7 @@ import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/pages/radical/amalgamation_list.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
-import 'package:robanohashi/common/tagged_mnemonic.dart';
+import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
 
 class RadicalViewArgs {
   RadicalViewArgs({required this.id});

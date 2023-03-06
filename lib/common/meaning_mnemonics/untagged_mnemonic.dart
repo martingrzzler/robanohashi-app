@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:robanohashi/common/colors.dart';
 
-enum Token { radical, kanji, plain }
+enum Token { radical, kanji, plain, vocabulary }
 
-class MnemonicText extends StatelessWidget {
-  const MnemonicText({super.key, required this.text, required this.meanings});
+class UntaggedMnemonic extends StatelessWidget {
+  const UntaggedMnemonic(
+      {super.key, required this.text, required this.meanings});
 
   final String text;
   final Map<String, Token> meanings;
+
+  dynamic _getSpecialTokenStyle(Token token) {
+    switch (token) {
+      case Token.radical:
+        return TextStyle(
+            fontWeight: FontWeight.w900,
+            color: getSubjectBackgroundColor("radical"));
+      case Token.kanji:
+        return TextStyle(
+            fontWeight: FontWeight.w900,
+            color: getSubjectBackgroundColor("kanji"));
+      case Token.vocabulary:
+        return TextStyle(
+            fontWeight: FontWeight.w900,
+            color: getSubjectBackgroundColor("vocabulary"));
+      default:
+        throw Exception('unsupported token');
+    }
+  }
 
   List<TextSpan> _constructText() {
     final tokens = text.split(' ');
@@ -19,26 +40,18 @@ class MnemonicText extends StatelessWidget {
       if (tokenMask[j] != Token.plain) {
         final plainTokens = [...tokens.sublist(lastMeaningIndex, j), ' '];
 
-        spans.add(TextSpan(
-            text: plainTokens.join(' '),
-            style: TextStyle(color: Colors.grey[600])));
+        spans.add(TextSpan(text: plainTokens.join(' ')));
 
         spans.add(TextSpan(
           text: '${tokens[j]} ',
-          style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: tokenMask[j] == Token.kanji
-                  ? Colors.purple[400]
-                  : Colors.blue),
+          style: _getSpecialTokenStyle(tokenMask[j]),
         ));
         lastMeaningIndex = j + 1;
       }
     }
 
     final plainTokens = tokens.sublist(lastMeaningIndex, tokens.length);
-    spans.add(TextSpan(
-        text: plainTokens.join(' '),
-        style: TextStyle(color: Colors.grey[600])));
+    spans.add(TextSpan(text: plainTokens.join(' ')));
 
     return spans;
   }
@@ -65,6 +78,10 @@ class MnemonicText extends StatelessWidget {
   Widget build(BuildContext context) {
     final spans = _constructText();
 
-    return RichText(text: TextSpan(children: spans));
+    return RichText(
+      text: TextSpan(
+          children: spans,
+          style: TextStyle(color: Colors.grey[700], fontSize: 16)),
+    );
   }
 }

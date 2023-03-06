@@ -8,9 +8,11 @@ class Vocabulary implements Subject {
   final String object;
   final String slug;
   final String characters;
+  @override
   final List<Meaning> meanings;
   final String readingMnemonic;
   final List<VocabularyReading> readings;
+  @override
   final List<SubjectPreview> componentSubjects;
   final List<ContextSentence> contextSentences;
 
