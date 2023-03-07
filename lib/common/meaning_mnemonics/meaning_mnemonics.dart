@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:robanohashi/api/common.dart';
 import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
 import 'package:robanohashi/common/meaning_mnemonics/untagged_mnemonic.dart';
-import 'package:robanohashi/service/auth.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
 
     _mnemonics = Api.fetchMeaningMnemonics(
       widget.subject.id,
-      context.read<AuthService>().currentUser,
+      context.read<User?>(),
     );
   }
 
@@ -68,7 +67,7 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AuthService>().currentUser;
+    final user = context.watch<User?>();
 
     return FutureBuilder(
       future: _mnemonics,
@@ -112,7 +111,8 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
           );
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting || _loading) {
+        if ((snapshot.connectionState == ConnectionState.waiting || _loading) &&
+            !snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -139,7 +139,7 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                 return ElevatedButton.icon(
                   icon: const Icon(Icons.add),
                   onPressed: () {
-                    if (context.read<AuthService>().currentUser == null) {
+                    if (context.read<User?>() == null) {
                       Navigator.pushNamed(context, '/login');
                       return;
                     }
