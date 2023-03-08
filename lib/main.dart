@@ -49,6 +49,7 @@ class App extends StatelessWidget {
             initialData: null)
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.light,
           appBarTheme: AppBarTheme(
