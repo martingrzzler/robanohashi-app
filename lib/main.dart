@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:robanohashi/firebase_options.dart';
 import 'package:robanohashi/pages/kanji/kanji.dart';
+import 'package:robanohashi/pages/profile.dart';
 import 'package:robanohashi/pages/radical/radical.dart';
 import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -103,6 +104,7 @@ class App extends StatelessWidget {
                   })
                 ],
               ),
+          '/profile': (context) => const ProfileView(),
         },
         onGenerateRoute: (settings) {
           switch (settings.name) {

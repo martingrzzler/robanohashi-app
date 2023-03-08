@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'search/search_delegate.dart';
+import 'package:provider/provider.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const CustomAppBar({
@@ -12,11 +14,20 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<User?>();
     return AppBar(
       title: const Text(
         "Roba no hashi",
       ),
       actions: [
+        user != null
+            ? IconButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/profile', (route) => false);
+                },
+                icon: const Icon(Icons.person))
+            : Container(),
         IconButton(
             onPressed: () {
               Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
