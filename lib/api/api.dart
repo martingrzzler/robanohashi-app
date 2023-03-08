@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const String baseUrl = 'http://192.168.2.138:5000';
+  static const String baseUrl = 'http://192.168.2.100:5000';
 
   static Future<SearchResponse> fetchSearchResults(String query) async {
     final response = await http.get(Uri.parse('$baseUrl/search?query=$query'));
@@ -107,6 +107,62 @@ class Api {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to vote meaning mnemonic');
+    }
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> toggleMeaningMnemonicFavorite(
+      String mnemonicId, User user) async {
+    final response =
+        await http.post(Uri.parse('$baseUrl/meaning_mnemonic/toggle_favorite'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'Bearer ${await user.getIdToken()}'
+            },
+            body: jsonEncode(<String, dynamic>{
+              'id': mnemonicId,
+            }));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to toggle meaning mnemonic favorite');
+    }
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> updateMeaningMnemonic(
+      String mnemonicId, User user, String text) async {
+    final response = await http.put(Uri.parse('$baseUrl/meaning_mnemonic'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${await user.getIdToken()}'
+        },
+        body: jsonEncode(<String, dynamic>{
+          'id': mnemonicId,
+          'text': text,
+        }));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update meaning mnemonic');
+    }
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> deleteMeaningMnemonic(
+      String mnemonicId, User user) async {
+    final response = await http.delete(Uri.parse('$baseUrl/meaning_mnemonic'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${await user.getIdToken()}'
+        },
+        body: jsonEncode(<String, dynamic>{
+          'id': mnemonicId,
+        }));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete meaning mnemonic');
     }
 
     return jsonDecode(response.body);

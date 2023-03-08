@@ -8,6 +8,8 @@ class MeaningMnemonic {
   final int updatedAt;
   final bool? upvoted;
   final bool? downvoted;
+  final bool? favorite;
+  final bool? me;
 
   MeaningMnemonic({
     required this.id,
@@ -19,6 +21,8 @@ class MeaningMnemonic {
     required this.updatedAt,
     this.downvoted,
     this.upvoted,
+    this.favorite,
+    this.me,
   });
 
   factory MeaningMnemonic.fromJson(Map<String, dynamic> json) {
@@ -32,6 +36,8 @@ class MeaningMnemonic {
       updatedAt: json['updated_at'],
       upvoted: json['upvoted'] ?? false,
       downvoted: json['downvoted'] ?? false,
+      favorite: json['favorite'] ?? false,
+      me: json['me'] ?? false,
     );
   }
 }

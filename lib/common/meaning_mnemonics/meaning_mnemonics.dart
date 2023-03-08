@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/meaning_mnemonic.dart';
 
+import 'form.dart';
+
 class MeaningMnemonics extends StatefulWidget {
   const MeaningMnemonics({
     super.key,
@@ -23,8 +25,7 @@ class MeaningMnemonics extends StatefulWidget {
 }
 
 class _MeaningMnemonicsState extends State<MeaningMnemonics> {
-  bool _showForm = false;
-  bool _loading = false;
+  FormConfig _formConfig = FormConfig(editing: false);
   late Future<List<MeaningMnemonic>> _mnemonics;
 
   @override
@@ -65,6 +66,85 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
     return tokens;
   }
 
+  void handleOnFormSubmit(String text) async {
+    final mnemonic = _formConfig.mnemonic;
+
+    setState(() {
+      _formConfig = FormConfig(editing: false);
+    });
+
+    final user = context.read<User?>();
+
+    if (user == null) {
+      Navigator.pushNamed(context, '/login');
+      return;
+    }
+
+    try {
+      if (mnemonic != null) {
+        await Api.updateMeaningMnemonic(mnemonic.id, user, text);
+      } else {
+        await Api.createMeaningMnemonic(widget.subject, user, text);
+      }
+      setState(() {
+        _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id, user);
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to create mnemonic'),
+        ),
+      );
+    }
+  }
+
+  void handleOnUpvote(MeaningMnemonic mnemonic) {
+    return updateMnemonic(
+        (user) async => await Api.voteMeaningMnemonic(1, mnemonic.id, user),
+        'Failed to upvote mnemonic');
+  }
+
+  void handleOnDonwvote(MeaningMnemonic mnemonic) {
+    return updateMnemonic(
+        (user) async => await Api.voteMeaningMnemonic(-1, mnemonic.id, user),
+        'Failed to downvote mnemonic');
+  }
+
+  void handleToggleFavorite(MeaningMnemonic mnemonic) {
+    return updateMnemonic(
+        (user) async =>
+            await Api.toggleMeaningMnemonicFavorite(mnemonic.id, user),
+        'Failed to toggle favorite');
+  }
+
+  void handleOnDelete(MeaningMnemonic mnemonic) {
+    return updateMnemonic(
+        (user) async => await Api.deleteMeaningMnemonic(mnemonic.id, user),
+        'Failed to delete mnemonic');
+  }
+
+  void updateMnemonic(Function(User) onUpdate, String failureMessage) async {
+    final user = context.read<User?>();
+
+    if (user == null) {
+      Navigator.pushNamed(context, '/login');
+      return;
+    }
+
+    try {
+      await onUpdate(user);
+      setState(() {
+        _mnemonics = Api.fetchMeaningMnemonics(widget.subject.id, user);
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(failureMessage),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User?>();
@@ -72,46 +152,19 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
     return FutureBuilder(
       future: _mnemonics,
       builder: (context, snapshot) {
-        if (_showForm) {
+        if (_formConfig.editing) {
           return MnemonicForm(
             onClose: () {
               setState(() {
-                _showForm = false;
+                _formConfig = FormConfig(editing: false);
               });
             },
-            onSubmit: (text) async {
-              setState(() {
-                _showForm = false;
-              });
-              if (user == null) {
-                Navigator.pushNamed(context, '/login');
-                return;
-              }
-              try {
-                setState(() {
-                  _loading = true;
-                });
-                await Api.createMeaningMnemonic(widget.subject, user, text);
-                setState(() {
-                  _mnemonics =
-                      Api.fetchMeaningMnemonics(widget.subject.id, user);
-                });
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Failed to create mnemonic'),
-                  ),
-                );
-              } finally {
-                setState(() {
-                  _loading = false;
-                });
-              }
-            },
+            onSubmit: handleOnFormSubmit,
+            defaultText: _formConfig.mnemonic?.text,
           );
         }
 
-        if ((snapshot.connectionState == ConnectionState.waiting || _loading) &&
+        if (snapshot.connectionState == ConnectionState.waiting &&
             !snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -145,7 +198,7 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                     }
 
                     setState(() {
-                      _showForm = true;
+                      _formConfig = FormConfig(editing: true);
                     });
                   },
                   label: const Text('Add a mnemonic'),
@@ -157,36 +210,20 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
               return Column(
                 children: [
                   Row(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.star_border)),
+                          onPressed: () => handleToggleFavorite(mnemonic),
+                          icon: Icon(
+                            mnemonic.favorite! ? Icons.star : Icons.star_border,
+                            color: Colors.orange,
+                          )),
                       Row(children: [
                         Transform.rotate(
                           angle: pi / 2,
                           child: IconButton(
                             iconSize: 30,
-                            onPressed: () async {
-                              if (user == null) {
-                                Navigator.pushNamed(context, '/login');
-                                return;
-                              }
-
-                              try {
-                                await Api.voteMeaningMnemonic(
-                                    1, mnemonic.id, user);
-                                setState(() {
-                                  _mnemonics = Api.fetchMeaningMnemonics(
-                                      widget.subject.id, user);
-                                });
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Failed to vote'),
-                                  ),
-                                );
-                              }
-                            },
+                            onPressed: () => handleOnUpvote(mnemonic),
                             icon: Icon(
                               Icons.chevron_left,
                               color: mnemonic.upvoted! ? Colors.orange : null,
@@ -198,40 +235,77 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
                             angle: -pi / 2,
                             child: IconButton(
                               iconSize: 30,
-                              onPressed: () async {
-                                if (user == null) {
-                                  Navigator.pushNamed(context, '/login');
-                                  return;
-                                }
-                                try {
-                                  await Api.voteMeaningMnemonic(
-                                      -1, mnemonic.id, user);
-                                  setState(() {
-                                    _mnemonics = Api.fetchMeaningMnemonics(
-                                        widget.subject.id, user);
-                                  });
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Failed to vote'),
-                                    ),
-                                  );
-                                }
-                              },
+                              onPressed: () => handleOnDonwvote(mnemonic),
                               icon: const Icon(Icons.chevron_left),
                               color: mnemonic.downvoted! ? Colors.orange : null,
                             ))
                       ]),
+                      mnemonic.me!
+                          ? IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _formConfig = FormConfig(
+                                      editing: true, mnemonic: mnemonic);
+                                });
+                              },
+                              icon: const Icon(Icons.edit),
+                              color: Colors.grey[600],
+                            )
+                          : Container(),
+                      mnemonic.me!
+                          ? IconButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          title: const Text('Are you sure?'),
+                                          content: const Text(
+                                              'The mnemonic will be deleted permanently.'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: const Text('Cancel')),
+                                            OutlinedButton(
+                                              onPressed: () {
+                                                handleOnDelete(mnemonic);
+                                                Navigator.pop(context);
+                                              },
+                                              style: OutlinedButton.styleFrom(
+                                                  side: BorderSide(
+                                                      color: Colors.red[200]!,
+                                                      width: 2)),
+                                              child: Text('Delete',
+                                                  style: TextStyle(
+                                                      color: Colors.red[200])),
+                                            )
+                                          ],
+                                        ));
+                              },
+                              icon: const Icon(Icons.delete),
+                              color: Colors.red[200],
+                            )
+                          : Container(),
                       Expanded(
-                        child: Container(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              _getUsername(mnemonic.userId, user),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              timeago.format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      mnemonic.updatedAt * 1000)),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(
-                        _getUsername(mnemonic.userId, user),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(
-                          mnemonic.updatedAt * 1000))),
                     ],
                   ),
                   Row(
@@ -258,86 +332,6 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
               );
             });
       },
-    );
-  }
-}
-
-class MnemonicForm extends StatefulWidget {
-  const MnemonicForm(
-      {super.key, required this.onClose, required this.onSubmit});
-
-  final Function onClose;
-  final Function(String text) onSubmit;
-
-  @override
-  State<MnemonicForm> createState() => MnemonicFormState();
-}
-
-class MnemonicFormState extends State<MnemonicForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 40.0, top: 25),
-              child: TextFormField(
-                controller: _controller,
-                maxLines: 50,
-                autofocus: true,
-                style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500),
-                decoration: const InputDecoration(
-                    hintText: 'The more absurd the better...'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Material(
-                color: Colors.transparent,
-                child: IconButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        widget.onSubmit(_controller.text);
-                      }
-                    },
-                    icon: const Icon(Icons.send))),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Material(
-              color: Colors.transparent,
-              child: IconButton(
-                  onPressed: () => widget.onClose(),
-                  icon: const Icon(Icons.close)),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

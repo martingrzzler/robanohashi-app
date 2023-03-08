@@ -16,9 +16,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Future<String> token;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final user = context.read<User?>();
     token = user?.getIdToken() ?? Future.value('');
   }
