@@ -22,4 +22,5 @@ abstract class Subject {
   String get object;
   List<SubjectPreview> get componentSubjects;
   List<Meaning> get meanings;
+  String get readingMnemonic;
 }

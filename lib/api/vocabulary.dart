@@ -10,6 +10,7 @@ class Vocabulary implements Subject {
   final String characters;
   @override
   final List<Meaning> meanings;
+  @override
   final String readingMnemonic;
   final List<VocabularyReading> readings;
   @override

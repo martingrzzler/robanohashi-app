@@ -13,6 +13,6 @@ class SearchResponse {
     return SearchResponse(
         totalCount: json['total_count'],
         data: List<SubjectPreview>.from(
-            json['data'].map((x) => SubjectPreview.fromJson(x))));
+            json['items'].map((x) => SubjectPreview.fromJson(x))));
   }
 }

@@ -120,14 +120,14 @@ class _KanjiViewState extends State<KanjiView> {
                       height: 50,
                       child: TabBar(tabs: [
                         Tab(
-                          text: 'Meaning',
-                        ),
-                        Tab(
-                          text: 'Reading',
+                          text: 'Mnemonics',
                         ),
                         Tab(
                           text: 'Vocabulary',
-                        )
+                        ),
+                        Tab(
+                          text: 'Similar',
+                        ),
                       ]),
                     ),
                     const SizedBox(
@@ -135,12 +135,9 @@ class _KanjiViewState extends State<KanjiView> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      MeaningMnemonics(subject: data),
-                      TaggedMnemonic(
-                        mnemonic: data.readingMnemonic,
-                        tags: const {Tag.ja, Tag.kanji, Tag.reading},
-                      ),
-                      AmalgamationList(vocabs: data.amalgamationSubjects)
+                      Mnemonics(subject: data),
+                      AmalgamationList(vocabs: data.amalgamationSubjects),
+                      Placeholder()
                     ]))
                   ]),
             ),

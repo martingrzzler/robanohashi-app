@@ -8,6 +8,7 @@ class Kanji implements Subject {
   final String object;
   final String characters;
   final String slug;
+  @override
   final String readingMnemonic;
   final List<KanjiReading> readings;
   @override

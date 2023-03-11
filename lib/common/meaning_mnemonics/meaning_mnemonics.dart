@@ -12,8 +12,8 @@ import 'package:robanohashi/api/meaning_mnemonic.dart';
 
 import 'form.dart';
 
-class MeaningMnemonics extends StatefulWidget {
-  const MeaningMnemonics({
+class Mnemonics extends StatefulWidget {
+  const Mnemonics({
     super.key,
     required this.subject,
   });
@@ -21,11 +21,12 @@ class MeaningMnemonics extends StatefulWidget {
   final Subject subject;
 
   @override
-  State<MeaningMnemonics> createState() => _MeaningMnemonicsState();
+  State<Mnemonics> createState() => _MnemonicsState();
 }
 
-class _MeaningMnemonicsState extends State<MeaningMnemonics> {
+class _MnemonicsState extends State<Mnemonics> {
   FormConfig _formConfig = FormConfig(editing: false);
+  bool _showReadingMnemonic = false;
   late Future<List<MeaningMnemonic>> _mnemonics;
 
   @override
@@ -164,6 +165,25 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
           );
         }
 
+        if (_showReadingMnemonic) {
+          return Column(
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                    onPressed: () => setState(() {
+                          _showReadingMnemonic = false;
+                        }),
+                    icon: const Icon(Icons.close)),
+              ),
+              TaggedMnemonic(
+                mnemonic: widget.subject.readingMnemonic,
+                tags: const {Tag.ja, Tag.kanji, Tag.reading},
+              ),
+            ],
+          );
+        }
+
         if (snapshot.connectionState == ConnectionState.waiting &&
             !snapshot.hasData) {
           return const Center(
@@ -189,19 +209,33 @@ class _MeaningMnemonicsState extends State<MeaningMnemonics> {
             itemCount: data.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
-                return ElevatedButton.icon(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    if (context.read<User?>() == null) {
-                      Navigator.pushNamed(context, '/login');
-                      return;
-                    }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        if (context.read<User?>() == null) {
+                          Navigator.pushNamed(context, '/login');
+                          return;
+                        }
 
-                    setState(() {
-                      _formConfig = FormConfig(editing: true);
-                    });
-                  },
-                  label: const Text('Add a mnemonic'),
+                        setState(() {
+                          _formConfig = FormConfig(editing: true);
+                        });
+                      },
+                      label: const Text('Add a mnemonic'),
+                    ),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.record_voice_over_rounded),
+                      onPressed: () {
+                        setState(() {
+                          _showReadingMnemonic = !_showReadingMnemonic;
+                        });
+                      },
+                      label: const Text('Reading'),
+                    ),
+                  ],
                 );
               }
 

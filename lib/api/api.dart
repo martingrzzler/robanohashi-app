@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const String baseUrl = 'http://localhost:5000';
+  static const String baseUrl = 'http://192.168.2.100:4000';
 
   static Future<SearchResponse> fetchSearchResults(String query) async {
     final response = await http.get(Uri.parse('$baseUrl/search?query=$query'));
@@ -66,7 +66,7 @@ class Api {
       throw Exception('Failed to load meaning mnemonics');
     }
 
-    return List<MeaningMnemonic>.from(jsonDecode(response.body)["data"]
+    return List<MeaningMnemonic>.from(jsonDecode(response.body)["items"]
         .map((e) => MeaningMnemonic.fromJson(e)));
   }
 
