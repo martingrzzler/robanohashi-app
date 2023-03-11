@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/composition.dart';
+import 'package:robanohashi/common/kanji_grid.dart';
 import 'package:robanohashi/common/meaning_mnemonics/meaning_mnemonics.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
@@ -137,7 +138,7 @@ class _KanjiViewState extends State<KanjiView> {
                         child: TabBarView(children: [
                       Mnemonics(subject: data),
                       AmalgamationList(vocabs: data.amalgamationSubjects),
-                      Placeholder()
+                      KanjiGrid(kanjis: data.visualSimilarSubjects)
                     ]))
                   ]),
             ),

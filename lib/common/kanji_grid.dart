@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/api/subject_preview.dart';
+import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/pages/kanji/kanji.dart';
 
-import '../../common/colors.dart';
-import '../../common/subject_card.dart';
+import 'subject_card.dart';
 
-class AmalgamationGrid extends StatelessWidget {
-  const AmalgamationGrid({
+class KanjiGrid extends StatelessWidget {
+  const KanjiGrid({
     super.key,
-    required this.amalgamation,
-    required this.color,
+    required this.kanjis,
   });
 
-  final List<SubjectPreview> amalgamation;
-  final Color color;
+  final List<SubjectPreview> kanjis;
 
   Widget _buildVocabulary(SubjectPreview subject, void Function() onTap) {
     return GestureDetector(
       onTap: onTap,
       child: SubjectCard(
-        color: color,
+        color: getSubjectBackgroundColor("kanji"),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(subject.characters,
               style: const TextStyle(color: Colors.white, fontSize: 40)),
@@ -46,7 +44,7 @@ class AmalgamationGrid extends StatelessWidget {
       crossAxisCount: 3,
       mainAxisSpacing: 3,
       crossAxisSpacing: 3,
-      children: amalgamation
+      children: kanjis
           .map((e) => _buildVocabulary(e, () {
                 Navigator.pushNamed(context, '/kanji',
                     arguments: KanjiViewArgs(id: e.id));
