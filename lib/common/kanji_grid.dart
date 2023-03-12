@@ -14,26 +14,29 @@ class KanjiGrid extends StatelessWidget {
   final List<SubjectPreview> kanjis;
 
   Widget _buildVocabulary(SubjectPreview subject, void Function() onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SubjectCard(
-        color: getSubjectBackgroundColor("kanji"),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(subject.characters,
-              style: const TextStyle(color: Colors.white, fontSize: 40)),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            subject.meanings.first,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: Colors.white),
-          ),
-          Text(
-            subject.readings!.first,
-            style: const TextStyle(color: Colors.white),
-          )
-        ]),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: SubjectCard(
+          color: getSubjectBackgroundColor("kanji"),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(subject.characters,
+                style: const TextStyle(color: Colors.white, fontSize: 40)),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              subject.meanings.first,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.white),
+            ),
+            Text(
+              subject.readings!.first,
+              style: const TextStyle(color: Colors.white),
+            )
+          ]),
+        ),
       ),
     );
   }

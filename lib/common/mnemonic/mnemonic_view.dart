@@ -146,19 +146,25 @@ class MnemonicView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: GestureDetector(
-                onTap: () => linkToSubject
-                    ? _navigate(context, mnemonic.subject)
-                    : () => {},
-                child: mnemonic.userId == 'wanikani'
-                    ? TaggedMnemonic(mnemonic: mnemonic.text, tags: const {
-                        Tag.kanji,
-                        Tag.radical,
-                        Tag.vocabulary,
-                        Tag.ja,
-                      })
-                    : UntaggedMnemonic(
-                        text: mnemonic.text, meanings: _getCompositionTokens()),
+              child: MouseRegion(
+                cursor: linkToSubject
+                    ? SystemMouseCursors.click
+                    : SystemMouseCursors.basic,
+                child: GestureDetector(
+                  onTap: () => linkToSubject
+                      ? _navigate(context, mnemonic.subject)
+                      : () => {},
+                  child: mnemonic.userId == 'wanikani'
+                      ? TaggedMnemonic(mnemonic: mnemonic.text, tags: const {
+                          Tag.kanji,
+                          Tag.radical,
+                          Tag.vocabulary,
+                          Tag.ja,
+                        })
+                      : UntaggedMnemonic(
+                          text: mnemonic.text,
+                          meanings: _getCompositionTokens()),
+                ),
               ),
             ),
           ],

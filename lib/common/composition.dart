@@ -22,32 +22,35 @@ class Composition extends StatelessWidget {
   Widget _buildComponent(BuildContext context, SubjectPreview component) {
     return Column(
       children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-                context, object == ComponentType.kanji ? '/kanji' : '/radical',
-                arguments: object == ComponentType.kanji
-                    ? KanjiViewArgs(id: component.id)
-                    : RadicalViewArgs(id: component.id));
-          },
-          child: SubjectCard(
-            color: getSubjectBackgroundColor(
-                object == ComponentType.kanji ? 'kanji' : 'radical'),
-            child: component.characters != ""
-                ? Text(
-                    component.characters,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 30.0,
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context,
+                  object == ComponentType.kanji ? '/kanji' : '/radical',
+                  arguments: object == ComponentType.kanji
+                      ? KanjiViewArgs(id: component.id)
+                      : RadicalViewArgs(id: component.id));
+            },
+            child: SubjectCard(
+              color: getSubjectBackgroundColor(
+                  object == ComponentType.kanji ? 'kanji' : 'radical'),
+              child: component.characters != ""
+                  ? Text(
+                      component.characters,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0,
+                      ),
+                    )
+                  : SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: ScalableImageWidget(
+                          si: ScalableImage.fromSvgString(
+                              component.characterImage)),
                     ),
-                  )
-                : SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: ScalableImageWidget(
-                        si: ScalableImage.fromSvgString(
-                            component.characterImage)),
-                  ),
+            ),
           ),
         ),
         const SizedBox(height: 2),
