@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:robanohashi/api/common.dart';
-import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/pages/kanji/kanji.dart';
 import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 import 'package:timeago/timeago.dart' as timeago;
