@@ -3,6 +3,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/firebase_options.dart';
 import 'package:robanohashi/pages/kanji/kanji.dart';
 import 'package:robanohashi/pages/user.dart';
@@ -11,6 +12,7 @@ import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:robanohashi/service/auth.dart';
 
+import 'layout.dart';
 import 'pages/home.dart';
 
 Future<void> main() async {
@@ -78,7 +80,7 @@ class App extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => const Home(),
+          '/': (context) => const Layout(child: Home()),
           '/login': (context) => SignInScreen(
                 actions: [
                   AuthStateChangeAction<SignedIn>((context, state) {
@@ -105,7 +107,7 @@ class App extends StatelessWidget {
                   })
                 ],
               ),
-          '/user': (context) => const UserView(),
+          '/user': (context) => const Layout(child: UserView()),
           '/profile': (context) => ProfileScreen(
                 actions: [
                   SignedOutAction((context) {
@@ -116,21 +118,23 @@ class App extends StatelessWidget {
               )
         },
         onGenerateRoute: (settings) {
+          print("LOG onGenerateRoute: ${settings.name}");
           switch (settings.name) {
             case KanjiView.routeName:
               final args = settings.arguments as KanjiViewArgs;
               return MaterialPageRoute(
-                builder: (context) => KanjiView(id: args.id),
+                builder: (context) => Layout(child: KanjiView(id: args.id)),
               );
             case RadicalView.routeName:
               final args = settings.arguments as RadicalViewArgs;
               return MaterialPageRoute(
-                builder: (context) => RadicalView(id: args.id),
+                builder: (context) => Layout(child: RadicalView(id: args.id)),
               );
             case VocabularyView.routeName:
               final args = settings.arguments as VocabularyViewArgs;
               return MaterialPageRoute(
-                builder: (context) => VocabularyView(id: args.id),
+                builder: (context) =>
+                    Layout(child: VocabularyView(id: args.id)),
               );
             default:
               throw Exception('Unknown route: ${settings.name}');

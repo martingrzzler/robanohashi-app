@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const CustomAppBar({
     super.key,
+    required this.padding,
   });
+
+  final double padding;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -15,9 +18,13 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User?>();
+
     return AppBar(
-      title: const Text(
-        "Roba no hashi",
+      title: Padding(
+        padding: EdgeInsets.only(left: padding),
+        child: const Text(
+          "Roba no hashi",
+        ),
       ),
       actions: [
         user != null
@@ -35,10 +42,16 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             icon: const Icon(Icons.home)),
         IconButton(
           onPressed: () {
-            showSearch(context: context, delegate: DictionarySearchDelegate());
+            showSearch(
+              context: context,
+              delegate: DictionarySearchDelegate(),
+            );
           },
           icon: const Icon(Icons.search),
         ),
+        SizedBox(
+          width: padding,
+        )
       ],
     );
   }
