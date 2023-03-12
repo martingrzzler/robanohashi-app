@@ -1,5 +1,5 @@
 name: robanohashi
-description: A new Flutter project.
+description: A community driven application to aid learners of Japanese Kanji with menmonics.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -67,9 +67,3 @@ flutter:
 
   # assets:
   #   - images/a_dot_ham.jpeg
-
-  fonts:
-    - family: Noto Sans Japanese
-      fonts:
-        - asset: assets/fonts/NotoSansJP-Medium.otf
-          weight: 500

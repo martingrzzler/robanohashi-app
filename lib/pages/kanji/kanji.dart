@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/composition.dart';
+import 'package:robanohashi/common/future_wrapper.dart';
 import 'package:robanohashi/common/kanji_grid.dart';
-import 'package:robanohashi/common/meaning_mnemonics/meaning_mnemonics.dart';
+import 'package:robanohashi/common/mnemonic/subjects_mnemonics.dart';
 import 'package:robanohashi/common/subject_card.dart';
-import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
 import 'package:robanohashi/pages/kanji/amalgamation.dart';
 import 'package:robanohashi/api/api.dart';
 
@@ -43,28 +43,9 @@ class _KanjiViewState extends State<KanjiView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: FutureBuilder(
+      body: FutureWrapper(
         future: kanji,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.error),
-                SizedBox(width: 10),
-                Text('Oops, something went wrong!'),
-              ],
-            ));
-          }
-
-          final data = snapshot.data as Kanji;
-
+        onData: (context, data) {
           return DefaultTabController(
             length: 3,
             child: Padding(
@@ -136,7 +117,7 @@ class _KanjiViewState extends State<KanjiView> {
                     ),
                     Expanded(
                         child: TabBarView(children: [
-                      Mnemonics(subject: data),
+                      MnemonicsListBySubject(subject: data),
                       AmalgamationList(vocabs: data.amalgamationSubjects),
                       KanjiGrid(kanjis: data.visualSimilarSubjects)
                     ]))

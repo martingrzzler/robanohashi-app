@@ -52,7 +52,7 @@ class Api {
     return Vocabulary.fromJson(jsonDecode(response.body));
   }
 
-  static Future<List<MeaningMnemonic>> fetchMeaningMnemonics(
+  static Future<List<dynamic>> fetchMeaningMnemonicsBySubject(
       int subjectId, User? user) async {
     final headers = user != null
         ? <String, String>{'Authorization': 'Bearer ${await user.getIdToken()}'}
@@ -66,8 +66,48 @@ class Api {
       throw Exception('Failed to load meaning mnemonics');
     }
 
-    return List<MeaningMnemonic>.from(jsonDecode(response.body)["items"]
-        .map((e) => MeaningMnemonic.fromJson(e)));
+    if (user == null) {
+      return List<MeaningMnemonic>.from(jsonDecode(response.body)["items"]
+          .map((e) => MeaningMnemonic.fromJson(e)));
+    }
+
+    return List<MeaningMnemonicWithUserInfo>.from(
+        jsonDecode(response.body)["items"]
+            .map((e) => MeaningMnemonicWithUserInfo.fromJson(e)));
+  }
+
+  static Future<List<MeaningMnemonicWithUserInfo>> fetchMeaningMnemonicsByUser(
+      User user) async {
+    final response = await http.get(
+        Uri.parse('$baseUrl/user/meaning_mnemonics'),
+        headers: <String, String>{
+          'Authorization': 'Bearer ${await user.getIdToken()}'
+        });
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load meaning mnemonics');
+    }
+
+    return List<MeaningMnemonicWithUserInfo>.from(
+        jsonDecode(response.body)["items"]
+            .map((e) => MeaningMnemonicWithUserInfo.fromJson(e)));
+  }
+
+  static Future<List<MeaningMnemonicWithUserInfo>>
+      fetchMeaningMnemonicsFavorites(User user) async {
+    final response = await http.get(
+        Uri.parse('$baseUrl/meaning_mnemonics/favorites'),
+        headers: <String, String>{
+          'Authorization': 'Bearer ${await user.getIdToken()}'
+        });
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load meaning mnemonics');
+    }
+
+    return List<MeaningMnemonicWithUserInfo>.from(
+        jsonDecode(response.body)["items"]
+            .map((e) => MeaningMnemonicWithUserInfo.fromJson(e)));
   }
 
   static Future<Map<String, dynamic>> createMeaningMnemonic(

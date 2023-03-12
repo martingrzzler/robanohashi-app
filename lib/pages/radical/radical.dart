@@ -3,10 +3,11 @@ import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/radical.dart';
 import 'package:robanohashi/app_bar.dart';
+import 'package:robanohashi/common/future_wrapper.dart';
 import 'package:robanohashi/common/kanji_grid.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/subject_card.dart';
-import 'package:robanohashi/common/meaning_mnemonics/tagged_mnemonic.dart';
+import 'package:robanohashi/common/mnemonic/tagged_mnemonic.dart';
 
 class RadicalViewArgs {
   RadicalViewArgs({required this.id});
@@ -38,28 +39,9 @@ class _RadicalViewState extends State<RadicalView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: FutureBuilder(
+      body: FutureWrapper(
         future: radical,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.error),
-                SizedBox(width: 10),
-                Text('Oops, something went wrong!'),
-              ],
-            ));
-          }
-
-          final data = snapshot.data as Radical;
-
+        onData: (context, data) {
           return DefaultTabController(
               length: 2,
               child: Padding(

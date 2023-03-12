@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             ? IconButton(
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
-                      context, '/profile', (route) => false);
+                      context, '/user', (route) => false);
                 },
                 icon: const Icon(Icons.person))
             : Container(),
