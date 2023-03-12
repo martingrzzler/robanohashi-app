@@ -135,6 +135,7 @@ class _MnemonicsListByUserState extends State<MnemonicsListByUser> {
                   mnemonic: mnemonic,
                   onOnUpvote: handleOnUpvote,
                   onOnDonwvote: handleOnDonwvote,
+                  linkToSubject: true,
                   onToggleFavorite: handleToggleFavorite,
                   onDelete: (mnemonic) {
                     showDialog(

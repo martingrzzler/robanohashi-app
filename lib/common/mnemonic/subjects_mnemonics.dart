@@ -118,7 +118,7 @@ class _MnemonicsListBySubjectState extends State<MnemonicsListBySubject> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<User?>();
+    final _ = context.watch<User?>();
     return FutureWrapper(
       future: _mnemonics,
       onData: (context, data) {

@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:robanohashi/api/common.dart';
+import 'package:robanohashi/common/colors.dart';
+import 'package:robanohashi/pages/kanji/kanji.dart';
+import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:robanohashi/api/meaning_mnemonic.dart';
 import 'package:robanohashi/common/mnemonic/untagged_mnemonic.dart';
@@ -17,6 +21,7 @@ class MnemonicView extends StatelessWidget {
       required this.onOnDonwvote,
       required this.onToggleFavorite,
       required this.onDelete,
+      this.linkToSubject = false,
       required this.onEdit});
 
   final MeaningMnemonicWithUserInfo mnemonic;
@@ -25,6 +30,7 @@ class MnemonicView extends StatelessWidget {
   final Function(MeaningMnemonicWithUserInfo) onToggleFavorite;
   final Function(MeaningMnemonicWithUserInfo) onDelete;
   final Function(MeaningMnemonicWithUserInfo) onEdit;
+  final bool linkToSubject;
 
   String _getUsername(String mnemonicUserId, User? user) {
     if (user != null && mnemonicUserId == user.uid) {
@@ -35,6 +41,19 @@ class MnemonicView extends StatelessWidget {
       return 'AI Generated';
     } else {
       return 'by User';
+    }
+  }
+
+  _navigate(BuildContext context, Subject subject) {
+    switch (subject.object) {
+      case 'kanji':
+        Navigator.pushNamed(context, '/kanji',
+            arguments: KanjiViewArgs(id: subject.id));
+        break;
+      case 'vocabulary':
+        Navigator.pushNamed(context, '/vocabulary',
+            arguments: VocabularyViewArgs(id: subject.id));
+        break;
     }
   }
 
@@ -128,15 +147,20 @@ class MnemonicView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: mnemonic.userId == 'wanikani'
-                  ? TaggedMnemonic(mnemonic: mnemonic.text, tags: const {
-                      Tag.kanji,
-                      Tag.radical,
-                      Tag.vocabulary,
-                      Tag.ja,
-                    })
-                  : UntaggedMnemonic(
-                      text: mnemonic.text, meanings: _getCompositionTokens()),
+              child: GestureDetector(
+                onTap: () => linkToSubject
+                    ? _navigate(context, mnemonic.subject)
+                    : () => {},
+                child: mnemonic.userId == 'wanikani'
+                    ? TaggedMnemonic(mnemonic: mnemonic.text, tags: const {
+                        Tag.kanji,
+                        Tag.radical,
+                        Tag.vocabulary,
+                        Tag.ja,
+                      })
+                    : UntaggedMnemonic(
+                        text: mnemonic.text, meanings: _getCompositionTokens()),
+              ),
             ),
           ],
         ),
