@@ -31,7 +31,7 @@ class DictionarySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    if (query.length < 2) {
+    if (query.isEmpty) {
       return const Center(
         child: Text('Results here'),
       );
@@ -44,7 +44,7 @@ class DictionarySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.length < 2) {
+    if (query.isEmpty) {
       return const Center(
         child: Text('Results here'),
       );
