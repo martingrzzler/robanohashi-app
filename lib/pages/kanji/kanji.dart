@@ -55,9 +55,11 @@ class _KanjiViewState extends State<KanjiView> {
                     children: [
                       SubjectCard(
                           color: getSubjectBackgroundColor("kanji"),
-                          child: Text(data.characters,
+                          child: SelectableText(data.characters,
                               style: const TextStyle(
-                                  fontSize: 60, color: Colors.white))),
+                                  fontSize: 60,
+                                  height: 1.2,
+                                  color: Colors.white))),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(

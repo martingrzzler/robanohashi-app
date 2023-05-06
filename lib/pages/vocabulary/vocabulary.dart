@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/vocabulary.dart';
-import 'package:robanohashi/app_bar.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/future_wrapper.dart';
 import 'package:robanohashi/common/mnemonic/subjects_mnemonics.dart';
@@ -56,18 +55,20 @@ class _VocabularyViewState extends State<VocabularyView> {
                         children: [
                           SubjectCard(
                             color: getSubjectBackgroundColor("vocabulary"),
-                            child: Text(data.characters,
+                            child: SelectableText(data.characters,
                                 style: const TextStyle(
                                   fontSize: 45,
+                                  height: 1.2,
                                   color: Colors.white,
                                 )),
                           ),
-                          Text(
+                          SelectableText(
                             data.readings
                                 .firstWhere((element) => element.primary)
                                 .reading,
                             style: TextStyle(
                               fontSize: 20,
+                              height: 1.2,
                               color: Colors.grey[700],
                             ),
                           ),

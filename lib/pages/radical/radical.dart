@@ -53,10 +53,11 @@ class _RadicalViewState extends State<RadicalView> {
                       SubjectCard(
                         color: getSubjectBackgroundColor("radical"),
                         child: data.characters != ""
-                            ? Text(
+                            ? SelectableText(
                                 data.characters,
                                 style: const TextStyle(
                                   color: Colors.white,
+                                  height: 1.2,
                                   fontSize: 60.0,
                                 ),
                               )

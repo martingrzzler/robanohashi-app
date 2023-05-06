@@ -21,10 +21,11 @@ class KanjiReadings extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
+        SelectableText(
           reading?.reading ?? 'None',
           style: TextStyle(
               fontSize: 18,
+              height: 1.2,
               fontWeight: reading != null ? FontWeight.bold : FontWeight.normal,
               color: reading != null ? Colors.grey[700] : Colors.grey[400]),
         ),
