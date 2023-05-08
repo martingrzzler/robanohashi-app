@@ -64,7 +64,7 @@ class MnemonicFormState extends State<MnemonicForm> {
                     color: Colors.black,
                     fontWeight: FontWeight.w500),
                 decoration: const InputDecoration(
-                    hintText: 'The more absurd the better...'),
+                    hintText: 'The more bizarre the better...'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter some text';

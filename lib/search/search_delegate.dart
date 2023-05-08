@@ -8,6 +8,9 @@ class DictionarySearchDelegate extends SearchDelegate {
   late Future<SearchResponse> searchResults;
 
   @override
+  String get searchFieldLabel => 'Romaji, Japanese, English';
+
+  @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(

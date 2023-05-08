@@ -12,7 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:robanohashi/service/auth.dart';
 
 import 'layout.dart';
-import 'pages/home.dart';
+import 'pages/home/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
