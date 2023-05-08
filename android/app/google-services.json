@@ -1,81 +1,45 @@
 {
   "project_info": {
-    "project_number": "796405165831",
-    "project_id": "robanohashi-9387d",
-    "storage_bucket": "robanohashi-9387d.appspot.com"
+    "project_number": "922925388033",
+    "project_id": "robanohashi-39c60",
+    "storage_bucket": "robanohashi-39c60.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:796405165831:android:d37593993838a9aaa69fa2",
+        "mobilesdk_app_id": "1:922925388033:android:9bf44ac5f04fe7bd1e0b00",
         "android_client_info": {
-          "package_name": "com.example.robanohashi"
+          "package_name": "org.robanohashi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "796405165831-64csh1sk2pu9eu288ec57435rl80lsmg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC6EAnJzNtDAECEhzwX98kH-SJlIJhPcpE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "796405165831-1eosggb22598obrp1jcg4iarbipsnetd.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "796405165831-vv2nr9cq6phns7l78tbu3nclrlu7ji37.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.robanohashi"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:796405165831:android:1cbec098fa3268cba69fa2",
-        "android_client_info": {
-          "package_name": "robanohashi.org"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "796405165831-trdove876j8ipf3roettu24ug81htcji.apps.googleusercontent.com",
+          "client_id": "922925388033-k6taifkgruu8ikmjg6hdmjt7f4vg796v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "robanohashi.org",
+            "package_name": "org.robanohashi",
             "certificate_hash": "023d7e4cb1dbeb457d6d6a47d036af6075357e9f"
           }
         },
         {
-          "client_id": "796405165831-64csh1sk2pu9eu288ec57435rl80lsmg.apps.googleusercontent.com",
+          "client_id": "922925388033-7o7uqgm7uqeeln1bvskepi2e766abb1l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC6EAnJzNtDAECEhzwX98kH-SJlIJhPcpE"
+          "current_key": "AIzaSyDK5zT0VDmDjBH4XFixe2VX3KYKe8W4U_E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "796405165831-1eosggb22598obrp1jcg4iarbipsnetd.apps.googleusercontent.com",
+              "client_id": "922925388033-7o7uqgm7uqeeln1bvskepi2e766abb1l.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "796405165831-vv2nr9cq6phns7l78tbu3nclrlu7ji37.apps.googleusercontent.com",
+              "client_id": "922925388033-t0rlgc3n88qb55704kafn8nf04eah6et.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.robanohashi"
