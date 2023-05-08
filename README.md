@@ -1,16 +1,15 @@
 # robanohashi
 
-A new Flutter project.
+Roba no Hashi: A Japanese dictionary app for learning Kanji & Vocabulary with AI-generated mnemonics. Create, share, and discover mnemonics within our community.
 
-## Getting Started
+## Deployment
 
-This project is a starting point for a Flutter application.
+### Web
+```
+flutter build web
+```
 
-A few resources to get you started if this is your first Flutter project:
+1. Add the `meta` description to the `index.html`
+2. Add a title to `inidex.html`
+3. Copy files to production server
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
