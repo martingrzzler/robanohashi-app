@@ -154,7 +154,8 @@ class MnemonicView extends StatelessWidget {
                   onTap: () => linkToSubject
                       ? _navigate(context, mnemonic.subject)
                       : () => {},
-                  child: mnemonic.userId == 'wanikani'
+                  child: mnemonic.userId == 'wanikani' ||
+                          mnemonic.userId == 'ai_generated'
                       ? TaggedMnemonic(mnemonic: mnemonic.text, tags: const {
                           Tag.kanji,
                           Tag.radical,
