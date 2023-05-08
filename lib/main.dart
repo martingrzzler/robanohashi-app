@@ -23,14 +23,8 @@ Future<void> main() async {
   } catch (e) {
     print("LOG error initializing Firebase: $e");
   }
-  FirebaseUIAuth.configureProviders([
-    EmailAuthProvider(),
-    GoogleProvider(
-      clientId: DefaultFirebaseOptions.currentPlatform.androidClientId ??
-          DefaultFirebaseOptions.currentPlatform.iosClientId ??
-          '',
-    )
-  ]);
+  FirebaseUIAuth.configureProviders(
+      [EmailAuthProvider(), GoogleProvider(clientId: '')]);
 
   runApp(const App());
 }
