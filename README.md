@@ -8,5 +8,9 @@ Roba no Hashi: A Japanese dictionary app for learning Kanji & Vocabulary with AI
 ```
 flutter build web
 ```
+### Playstore
+```
+flutter build appbundle
+```
 
 
