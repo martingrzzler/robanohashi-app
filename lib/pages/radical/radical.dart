@@ -74,12 +74,20 @@ class _RadicalViewState extends State<RadicalView> {
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(
-                            data.meanings
-                                .firstWhere((element) => element.primary)
-                                .meaning,
-                            style: const TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                data.meanings
+                                    .firstWhere((element) => element.primary)
+                                    .meaning,
+                                style: const TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SubjectBookmark(
+                                  subjectId: data.id, object: 'radical')
+                            ],
                           ),
                           const SizedBox(height: 10),
                           Text(
@@ -93,7 +101,6 @@ class _RadicalViewState extends State<RadicalView> {
                           ),
                         ],
                       )),
-                      SubjectBookmark(subjectId: data.id, object: 'radical')
                     ],
                   ),
                   const Divider(),

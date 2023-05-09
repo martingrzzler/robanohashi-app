@@ -10,6 +10,7 @@ import 'package:robanohashi/pages/radical/radical.dart';
 import 'package:robanohashi/pages/vocabulary/vocabulary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:robanohashi/service/auth.dart';
+import 'package:robanohashi/service/bookmarks.dart';
 
 import 'layout.dart';
 import 'pages/home/home.dart';
@@ -38,6 +39,9 @@ class App extends StatelessWidget {
       providers: [
         Provider(
           create: (_) => AuthService(FirebaseAuth.instance),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => BookmarkedSubjectsService(),
         ),
         StreamProvider(
             create: (context) => context.read<AuthService>().authStateChanges,

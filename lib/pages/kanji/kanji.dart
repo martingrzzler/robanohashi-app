@@ -66,14 +66,22 @@ class _KanjiViewState extends State<KanjiView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                data.meanings
-                                    .firstWhere((element) => element.primary)
-                                    .meaning,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[700])),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    data.meanings
+                                        .firstWhere(
+                                            (element) => element.primary)
+                                        .meaning,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey[700])),
+                                SubjectBookmark(
+                                    subjectId: data.id, object: 'kanji')
+                              ],
+                            ),
                             const SizedBox(height: 5),
                             Text(
                                 data.meanings
@@ -87,7 +95,6 @@ class _KanjiViewState extends State<KanjiView> {
                           ],
                         ),
                       ),
-                      SubjectBookmark(subjectId: data.id, object: 'kanji')
                     ],
                   ),
                   const SizedBox(height: 10),

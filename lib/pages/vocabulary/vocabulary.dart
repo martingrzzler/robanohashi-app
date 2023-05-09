@@ -81,14 +81,21 @@ class _VocabularyViewState extends State<VocabularyView> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            Text(
-                              data.meanings
-                                  .firstWhere((element) => element.primary)
-                                  .meaning,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey[700],
-                                  fontWeight: FontWeight.bold),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  data.meanings
+                                      .firstWhere((element) => element.primary)
+                                      .meaning,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.grey[700],
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SubjectBookmark(
+                                    subjectId: data.id, object: 'vocabulary'),
+                              ],
                             ),
                             const SizedBox(height: 10),
                             Text(
@@ -99,7 +106,6 @@ class _VocabularyViewState extends State<VocabularyView> {
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.grey[700])),
                           ])),
-                      SubjectBookmark(subjectId: data.id, object: 'vocabulary'),
                     ],
                   ),
                   const Divider(),

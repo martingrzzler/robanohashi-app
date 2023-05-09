@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:robanohashi/api/common.dart';
 import 'package:robanohashi/api/meaning_mnemonic.dart';
+import 'package:robanohashi/api/subject_preview.dart';
 import 'package:robanohashi/api/vocabulary.dart';
 
 import 'kanji.dart';
@@ -241,5 +242,22 @@ class Api {
     }
 
     return jsonDecode(response.body);
+  }
+
+  static Future<List<SubjectPreview>> fetchBookmarkedSubjects(User user) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/user/bookmarks'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${await user.getIdToken()}'
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to toggle meaning mnemonic favorite');
+    }
+
+    return List<SubjectPreview>.from(jsonDecode(response.body)["items"]
+        .map((e) => SubjectPreview.fromJson(e)));
   }
 }
