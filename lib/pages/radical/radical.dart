@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/radical.dart';
-import 'package:robanohashi/app_bar.dart';
+import 'package:robanohashi/common/bookmark.dart';
 import 'package:robanohashi/common/future_wrapper.dart';
 import 'package:robanohashi/common/kanji_grid.dart';
 import 'package:robanohashi/common/colors.dart';
@@ -92,7 +92,8 @@ class _RadicalViewState extends State<RadicalView> {
                             ),
                           ),
                         ],
-                      ))
+                      )),
+                      SubjectBookmark(subjectId: data.id, object: 'radical')
                     ],
                   ),
                   const Divider(),

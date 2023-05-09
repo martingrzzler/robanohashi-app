@@ -26,12 +26,11 @@ class _MnemonicsListBySubjectState extends State<MnemonicsListBySubject> {
   bool _showReadingMnemonic = false;
 
   @override
-  void initState() {
-    super.initState();
-
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _mnemonics = Api.fetchMeaningMnemonicsBySubject(
       widget.subject.id,
-      context.read<User?>(),
+      context.watch<User?>(),
     );
   }
 
@@ -118,7 +117,6 @@ class _MnemonicsListBySubjectState extends State<MnemonicsListBySubject> {
 
   @override
   Widget build(BuildContext context) {
-    final _ = context.watch<User?>();
     return FutureWrapper(
       future: _mnemonics,
       onData: (context, data) {

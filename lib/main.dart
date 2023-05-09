@@ -111,7 +111,6 @@ class App extends StatelessWidget {
               )
         },
         onGenerateRoute: (settings) {
-          print("LOG onGenerateRoute: ${settings.name}");
           switch (settings.name) {
             case KanjiView.routeName:
               final args = settings.arguments as KanjiViewArgs;

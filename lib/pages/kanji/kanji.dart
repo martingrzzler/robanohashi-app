@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robanohashi/common/bookmark.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/composition.dart';
 import 'package:robanohashi/common/future_wrapper.dart';
@@ -86,6 +87,7 @@ class _KanjiViewState extends State<KanjiView> {
                           ],
                         ),
                       ),
+                      SubjectBookmark(subjectId: data.id, object: 'kanji')
                     ],
                   ),
                   const SizedBox(height: 10),

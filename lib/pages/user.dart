@@ -9,7 +9,7 @@ class UserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -36,12 +36,16 @@ class UserView extends StatelessWidget {
               ),
               Tab(
                 child: Text('Favorites'),
+              ),
+              Tab(
+                child: Text('Bookmarked'),
               )
             ]),
             const Expanded(
               child: TabBarView(children: [
                 MnemonicsListByUser(),
-                MnemonicsListByUser(favorites: true)
+                MnemonicsListByUser(favorites: true),
+                Placeholder()
               ]),
             )
           ],

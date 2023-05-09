@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/vocabulary.dart';
+import 'package:robanohashi/common/bookmark.dart';
 import 'package:robanohashi/common/colors.dart';
 import 'package:robanohashi/common/future_wrapper.dart';
 import 'package:robanohashi/common/mnemonic/subjects_mnemonics.dart';
 import 'package:robanohashi/common/subject_card.dart';
 import 'package:robanohashi/common/composition.dart';
-import 'package:robanohashi/common/mnemonic/tagged_mnemonic.dart';
 
 import 'examples.dart';
 
@@ -42,7 +42,7 @@ class _VocabularyViewState extends State<VocabularyView> {
       future: vocabulary,
       onData: (context, data) {
         return DefaultTabController(
-          length: 3,
+          length: 2,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -98,7 +98,8 @@ class _VocabularyViewState extends State<VocabularyView> {
                                     .join(", "),
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.grey[700])),
-                          ]))
+                          ])),
+                      SubjectBookmark(subjectId: data.id, object: 'vocabulary'),
                     ],
                   ),
                   const Divider(),
@@ -110,8 +111,7 @@ class _VocabularyViewState extends State<VocabularyView> {
                     height: 50,
                     child: TabBar(
                       tabs: [
-                        Tab(text: 'Meaning'),
-                        Tab(text: 'Reading'),
+                        Tab(text: 'Mnemonics'),
                         Tab(text: 'Examples'),
                       ],
                     ),
@@ -124,9 +124,6 @@ class _VocabularyViewState extends State<VocabularyView> {
                     MnemonicsListBySubject(
                       subject: data,
                     ),
-                    TaggedMnemonic(
-                        mnemonic: data.readingMnemonic,
-                        tags: const {Tag.kanji, Tag.ja, Tag.reading}),
                     Examples(examples: data.contextSentences),
                   ]))
                 ]),

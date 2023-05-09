@@ -23,9 +23,9 @@ class _MnemonicsListByUserState extends State<MnemonicsListByUser> {
   FormConfig _formConfig = FormConfig(editing: false);
 
   @override
-  void initState() {
-    super.initState();
-    final user = context.read<User?>()!;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = context.watch<User?>()!;
     _mnemonics = widget.favorites
         ? Api.fetchMeaningMnemonicsFavorites(user)
         : Api.fetchMeaningMnemonicsByUser(user);

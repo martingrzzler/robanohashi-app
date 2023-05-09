@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const String baseUrl = 'https://api.robanohashi.org';
+  static const String baseUrl = 'http://192.168.2.132:4000';
 
   static Future<SearchResponse> fetchSearchResults(String query) async {
     final response = await http.get(Uri.parse('$baseUrl/search?query=$query'));
@@ -203,6 +203,41 @@ class Api {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete meaning mnemonic');
+    }
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> toggleSubjectBookmarked(
+      int subjectId, String object, User user) async {
+    final response = await http.post(
+        Uri.parse('$baseUrl/subject/toggle_bookmark'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${await user.getIdToken()}'
+        },
+        body: jsonEncode(
+            <String, dynamic>{'subject_id': subjectId, 'object': object}));
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to toggle meaning mnemonic favorite');
+    }
+
+    return jsonDecode(response.body);
+  }
+
+  static Future<Map<String, dynamic>> getSubjectBookmarkedStatus(
+      int subjectId, String object, User user) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/subject/$subjectId/bookmark/status?object=$object'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${await user.getIdToken()}'
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to toggle meaning mnemonic favorite');
     }
 
     return jsonDecode(response.body);
