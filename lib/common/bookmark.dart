@@ -36,6 +36,9 @@ class _SubjectBookmarkState extends State<SubjectBookmark> {
 
   void onUserChanged(User? user) {
     if (user == null) {
+      setState(() {
+        _bookmarkStatus = Future.value({'bookmarked': false});
+      });
       return;
     }
 
