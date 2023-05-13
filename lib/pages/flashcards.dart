@@ -119,6 +119,9 @@ class _FlashcardsState extends State<Flashcards> {
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 18),
                             ),
+                            Text(currentSubject.readings?.join(", ") ?? "",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 18)),
                           ],
                         )
                       : Center(
