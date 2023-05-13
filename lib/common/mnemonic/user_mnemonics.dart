@@ -25,7 +25,12 @@ class _MnemonicsListByUserState extends State<MnemonicsListByUser> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final user = context.watch<User?>()!;
+    final user = context.watch<User?>();
+
+    if (user == null) {
+      return;
+    }
+
     _mnemonics = widget.favorites
         ? Api.fetchMeaningMnemonicsFavorites(user)
         : Api.fetchMeaningMnemonicsByUser(user);

@@ -37,20 +37,20 @@ class UserView extends StatelessWidget {
             ),
             const TabBar(tabs: [
               Tab(
+                child: Text('Bookmarked'),
+              ),
+              Tab(
                 child: Text('Mnemonics'),
               ),
               Tab(
                 child: Text('Favorites'),
               ),
-              Tab(
-                child: Text('Bookmarked'),
-              )
             ]),
             const Expanded(
               child: TabBarView(children: [
+                BookmarkedSubjects(),
                 MnemonicsListByUser(),
                 MnemonicsListByUser(favorites: true),
-                BookmarkedSubjects()
               ]),
             )
           ],
@@ -82,14 +82,29 @@ class _BookmarkedSubjectsState extends State<BookmarkedSubjects> {
   @override
   Widget build(BuildContext context) {
     final subjects = context.watch<BookmarkedSubjectsService>().subjects;
+
     return FutureWrapper(
         future: subjects,
         onData: (context, data) {
+          if (data.isEmpty) {
+            return const Center(
+              child: Text('No Bookmarked Subjects'),
+            );
+          }
+
           return ListView.builder(
-              itemCount: data.length,
+              itemCount: data.length + 1,
               itemBuilder: (context, index) {
+                if (index == 0 && data.isNotEmpty) {
+                  return OutlinedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/study');
+                      },
+                      child: const Text('Study'));
+                }
+
                 return SubjectPreviewCard(
-                  subject: data[index],
+                  subject: data[index - 1],
                 );
               });
         });

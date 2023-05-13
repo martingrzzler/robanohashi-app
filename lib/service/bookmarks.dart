@@ -4,7 +4,7 @@ import 'package:robanohashi/api/api.dart';
 import 'package:robanohashi/api/subject_preview.dart';
 
 class BookmarkedSubjectsService extends ChangeNotifier {
-  Future<List<SubjectPreview>> _subjects = Future.value(<SubjectPreview>[]);
+  Future<List<SubjectPreview>> _subjects = Future.value([]);
 
   Future<List<SubjectPreview>> get subjects => _subjects;
 

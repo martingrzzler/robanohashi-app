@@ -4,6 +4,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:robanohashi/firebase_options.dart';
+import 'package:robanohashi/pages/flashcards.dart';
 import 'package:robanohashi/pages/kanji/kanji.dart';
 import 'package:robanohashi/pages/user.dart';
 import 'package:robanohashi/pages/radical/radical.dart';
@@ -105,6 +106,7 @@ class App extends StatelessWidget {
                 ],
               ),
           '/user': (context) => const Layout(child: UserView()),
+          '/study': (context) => const Layout(child: Flashcards()),
           '/profile': (context) => ProfileScreen(
                 actions: [
                   SignedOutAction((context) {
