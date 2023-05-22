@@ -70,7 +70,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '922925388033',
     projectId: 'robanohashi-39c60',
     storageBucket: 'robanohashi-39c60.appspot.com',
-    androidClientId: '922925388033-k6taifkgruu8ikmjg6hdmjt7f4vg796v.apps.googleusercontent.com',
+    androidClientId: '922925388033-fs9aamrm9n730813b10uklqm23ujp09n.apps.googleusercontent.com',
     iosClientId: '922925388033-t0rlgc3n88qb55704kafn8nf04eah6et.apps.googleusercontent.com',
     iosBundleId: 'com.example.robanohashi',
   );

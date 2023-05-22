@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "922925388033-k6taifkgruu8ikmjg6hdmjt7f4vg796v.apps.googleusercontent.com",
+          "client_id": "922925388033-fs9aamrm9n730813b10uklqm23ujp09n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.robanohashi",
-            "certificate_hash": "023d7e4cb1dbeb457d6d6a47d036af6075357e9f"
+            "certificate_hash": "c5e81a30f930c2fe6365452bc7d96d5d04f27c0c"
           }
         },
         {
